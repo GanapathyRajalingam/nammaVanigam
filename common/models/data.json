@@ -1,0 +1,10 @@
+{
+    "name": "Data",
+    "base": "Model",
+    "plural" : "Data",
+    "properties": {
+    },
+    "validations": [],
+    "relations": {},
+    "acls": []
+}

@@ -1,0 +1,119 @@
+<dom-module id="ft-form-fetch">
+    <template>
+        <style include="ft-shared-styles iron-flex iron-flex-alignment">
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+                @apply(--paper-input-container-input-webkit-spinner);
+            }
+
+            input::-webkit-clear-button {
+                @apply(--paper-input-container-input-webkit-clear);
+            }
+
+            input::-webkit-input-placeholder {
+                color: var(--paper-input-container-color, --secondary-text-color);
+            }
+
+            input:-moz-placeholder {
+                color: var(--paper-input-container-color, --secondary-text-color);
+            }
+
+            input::-moz-placeholder {
+                color: var(--paper-input-container-color, --secondary-text-color);
+            }
+
+            input::-ms-clear {
+                @apply(--paper-input-container-ms-clear);
+            }
+
+            input::-webkit-calendar-picker-indicator {
+                @apply --paper-input-container-input-webkit-calendar-picker-indicator;
+            }
+
+            input:-ms-input-placeholder {
+                color: var(--paper-input-container-color, --secondary-text-color);
+            }
+
+            label {
+                pointer-events: none;
+            }
+
+            input {
+                outline: none;
+                box-shadow: none;
+                padding: 0;
+                width: 100%;
+                max-width: 100%;
+                background: transparent;
+                border: none;
+                color: var(--paper-input-container-input-color, --primary-text-color);
+                -webkit-appearance: none;
+                text-align: inherit;
+                vertical-align: bottom;
+
+                @apply(--paper-font-subhead);
+                @apply(--paper-input-container-input);
+            }
+
+            .container {
+                padding: 8px;
+                background: #fff;
+                border: 1px solid #80808038;
+                border-radius: 3px;
+
+            }
+        </style>
+
+        <div class="container">
+            <label style="display:none" hidden$="[[!label]]" aria-hidden="true" for$="[[_inputId]]">[[label]]</label>
+
+            <input is="iron-input" id$="[[_inputId]]" class="input-element" aria-labelledby$="[[_ariaLabelledBy]]" aria-describedby$="[[_ariaDescribedBy]]"
+                disabled$="[[disabled]]" title$="[[title]]" bind-value="{{value}}" invalid="{{invalid}}" prevent-invalid-input="[[preventInvalidInput]]"
+                allowed-pattern="[[allowedPattern]]" validator="[[validator]]" type$="[[type]]" pattern$="[[pattern]]" required$="[[required]]"
+                autocomplete$="[[autocomplete]]" autofocus$="[[autofocus]]" inputmode$="[[inputmode]]" minlength$="[[minlength]]"
+                maxlength$="[[maxlength]]" min$="[[min]]" max$="[[max]]" step$="[[step]]" name$="[[name]]" placeholder$="[[placeholder]]"
+                readonly$="[[readonly]]" list$="[[list]]" size$="[[size]]" autocapitalize$="[[autocapitalize]]" autocorrect$="[[autocorrect]]"
+                on-change="_onChange" tabindex$="[[tabindex]]" autosave$="[[autosave]]" results$="[[results]]" accept$="[[accept]]"
+                multiple$="[[multiple]]">
+        </div>
+
+    </template>
+
+    <script>
+
+        Polymer({
+            is: "ft-form-fetch",
+            properties: {
+
+            },
+            listeners: {
+                'input.focus': '_onFocus',
+                'input.keyup': '_onKeyUp',
+                'input.keydown': '_onKeyDown',
+                'input.input': '_onInput',
+                'input.blur': '_onBlur',
+                'input.change': '_onChange'
+            },
+            behaviors: [
+                Polymer.IronFormElementBehavior,
+                Polymer.PaperInputBehavior
+            ],
+            _onInput : function() {
+                
+            },
+            _onFocus : function() {
+                this.$.input.select();
+            }, 
+            _onKeyUp : function() {
+
+            },
+            _onKeyDown : function() {
+
+            },
+            _onBlur : function() {
+
+            }
+        });
+
+    </script>
+</dom-module>

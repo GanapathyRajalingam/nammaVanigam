@@ -1,0 +1,248 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html lang="en">
+
+<head>
+  <title>paper-card demo</title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <link rel="import" href="bower_components/polymer/polymer.html">
+  <link rel="import" href="bower_components/iron-collapse/iron-collapse.html">
+  <link rel="import" href="bower_components/iron-icons/iron-icons.html">
+  <link rel="import" href="bower_components/iron-icons/communication-icons.html">
+  <link rel="import" href="bower_components/iron-icons/hardware-icons.html">
+  <link rel="import" href="bower_components/iron-icons/social-icons.html">
+  <link rel="import" href="bower_components/iron-list/iron-list.html">
+  <link rel="import" href="bower_components/iron-collapse/iron-collapse.html">
+  <link rel="import" href="bower_components/paper-button/paper-button.html">
+  <link rel="import" href="bower_components/paper-input/paper-input.html">
+  <link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
+  <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+  <link rel="import" href="bower_components/paper-styles/color.html">
+  <link rel="import" href="bower_components/paper-styles/typography.html">
+  <link rel="import" href="bower_components/paper-card/paper-card.html">
+  <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+  <link rel="import" href="bower_components/oe-ajax/oe-ajax.html">
+  <style>
+    my-app {
+      width: 400px;
+    }
+  </style>
+
+
+
+</head>
+
+
+<body unresolved>
+
+  <my-app></my-app>
+
+  <dom-module id="my-app">
+    <template>
+        <style is="custom-style" include="iron-flex iron-flex-alignment">
+            paper-input {
+              width : 100px;
+            }
+            paper-searcher {
+              width : 400px;
+            }
+        </style>
+        <div class="layout vertical">
+        <div class="layout horizontal">
+            <paper-input label="name"></paper-input>
+            <paper-searcher></paper-searcher>
+            <paper-input label="desc"></paper-input>
+        </div>
+        <div class="layout horizontal">
+            <paper-input label="name"></paper-input>
+            <paper-input label="city"></paper-input>
+            <paper-input label="desc"></paper-input>
+        </div>
+      </div>
+    </template>
+    <script>
+     Polymer({
+        is: "my-app",
+     });
+    </script>
+  </dom-module>
+
+  <dom-module id="paper-searcher">
+
+    <template>
+
+      <style is="custom-style" include="iron-flex iron-flex-alignment">
+        .field2 {
+          max-width: 400px;
+        }
+
+        #searchInput {
+          max-width: 400px;
+          width : 300px;
+          margin: auto;
+        }
+
+        .search-result {
+          padding: 16px 16px;
+          margin: 16px 16px;
+        }
+
+
+        div {}
+
+        .c1 {
+          margin-left: 16px;
+          width: 100px;
+          margin-right: 16px;
+        }
+
+        .divider {
+          border-bottom: 1px solid rgba(132, 123, 123, 0.2)
+        }
+
+        /* .demo {
+          position: relative;
+        } */
+        #collapse {
+          position : absolute;
+          z-index: 102;
+          top : 60px;
+          left : 60px;
+          max-height: 200px;
+          min-width: 200px;
+          overflow-y:auto;
+          box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        }
+      </style>
+
+      <oe-ajax id="xhrfetch" method="GET" content-type="application/json" on-response="fetchSuccess"></oe-ajax>
+      <div class="demo">
+        <paper-input type="text" id="searchInput" label="Search" value="{{searchInput}}" autofocus="" on-change="_searchInputChanged"
+          on-keyup="_onKeyUp">
+        </paper-input>
+        <iron-collapse id="collapse" opened="{{true}}">
+          <paper-material>
+            <div class="collapse-content">
+              <iron-list items="[[searchResults]]">
+                <template>
+                  <style is="custom-style">
+                  </style>
+                  <paper-item class="divider search-result" on-tap="_chooseItem">
+                    <div class="layout horizontal center-justified wrap">
+                      <div class="c1">[[item.name]]</div>
+                          <div class="flex">[[item.description]]</div>
+                          <div class="flex">[[item.action]]</div>
+                          <div class="flex">[[item.user_id]]</div>
+                          <div class="flex">[[item.fbo_number]]</div> //list iterated
+                    </div>
+                  </paper-item>
+                </template>
+              </iron-list>
+            </div>
+          </paper-material>
+        </iron-collapse>
+      </div>
+    </template>
+
+    <script>
+      Polymer({
+        is: "paper-searcher",
+        properties: {
+          searchInput: {
+            type: String,
+            value: ""
+          },
+          searchResults: {
+            type: Array,
+            value: []
+          },
+          selectedItem: {
+            type: Object,
+            value: {},
+            notify: true
+          },
+          selectedValue: {
+            type: String,
+            value: "",
+            notify: true
+          },
+          minLength: {
+            type: 'Number',
+            value: 0
+          },
+          list: {
+            type: Array,
+            values: []
+          },
+          remoteMode: {
+            type: Boolean,
+            value: "false"
+          },
+          getRemoteSuggestions: {
+            type: Object
+          }
+
+        },
+        observers: [
+          '_resultsChanged(list.splices)'
+        ],
+        ready: function () {
+          console.log("Component loaded!");
+        },
+        _chooseItem: function (event, sender) {
+
+          var selectedItem = event.model.item;
+          console.log('selectedItem ', selectedItem);
+          this.fire('item-added', selectedItem);
+          this.searchInput = selectedItem.name;
+          // this.selectedItem = selectedItem;
+          // this.selectedValue = selectedItem.id;
+          this.$.collapse.toggle();
+        },
+        _onKeyUp: function (event) {
+          var self = this;
+          var value = event.target.value;
+          var collapse = this.$.collapse;
+          if (this.searchInput.length >= this.minLength) {
+            this.debounce('remoteSearch', function () {
+              self.$.xhrfetch.url = "http://localhost:3000/data/sampledata.json";
+              self.$.xhrfetch.generateRequest();
+            }, 200);
+          }
+        },
+        fetchSuccess: function (event) {
+          this.set('searchResults', JSON.parse(JSON.stringify(event.detail.response)));
+          this.showSuggestions(this.searchResults);
+        },
+        showSuggestions: function (results) {
+          var collapse = this.$.collapse;
+          if (results.length > 0) { //&& !collapse.opened
+            collapse.opened = true;
+            this.set('searchResults', results);
+            // collapse.toggle();
+          } else if (results.length == 0 && collapse.opened) {
+            collapse.toggle();
+          }
+        },
+        _searchInputChanged: function (event) {
+          //nothing to do
+        }
+      });
+    </script>
+  </dom-module>
+
+</body>
+
+</html>

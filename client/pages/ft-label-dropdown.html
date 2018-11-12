@@ -1,0 +1,75 @@
+<link rel="import" href="/bower_components/iron-dropdown/iron-dropdown.html">
+<link rel="import" href="/bower_components/neon-animation/neon-animations.html">
+<link rel="import" href="grow-height-animation.html">
+
+<dom-module id="ft-label-dropdown">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+        margin: 1em;
+      }
+
+      #dropdown {
+        border: 1px solid #8080803d;
+      }
+
+    </style>
+    <div on-tap="open" class="dropdown-trigger">
+      <content select=".dropdown-trigger"></content>
+    </div>
+    <iron-dropdown id="dropdown"
+      vertical-align="[[verticalAlign]]"
+      vertical-offset="40"
+      horizontal-offset="-120"
+      horizontal-align="[[horizontalAlign]]"
+      disabled="[[disabled]]"
+      open-animation-config="[[openAnimationConfig]]"
+      close-animation-config="[[closeAnimationConfig]]">
+            <content select=".dropdown-content"></content>
+    </iron-dropdown>
+  </template>
+  <script>
+    Polymer({
+      is: 'ft-label-dropdown',
+      properties: {
+        verticalAlign: {
+            type : String
+    
+        },
+        horizontalAlign: {
+            type : String
+        },
+        disabled: Boolean,
+        openAnimationConfig: {
+          type: Array,
+          value: function() {
+            return [{
+              name: 'fade-in-animation',
+              timing: {
+                delay: 150,
+                duration: 50
+              }
+            }];
+          }
+        },
+        closeAnimationConfig: {
+          type: Array,
+          value: function() {
+            return [{
+              name: 'fade-out-animation',
+              timing: {
+                duration: 200
+              }
+            }];
+          }
+        }
+      },
+      open: function() {
+        this.set('verticalAlign', 'top');
+        this.set('horizontalAlign', 'right');
+        this.$.dropdown.open();
+      }
+    });
+  </script>
+</dom-module>

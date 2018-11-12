@@ -1,0 +1,28 @@
+{
+  "name": "ftweb",
+  "version": "1.0.0",
+  "description": "A sample oecloud based application",
+  "author": "kpraveen",
+  "main": "server/server.js",
+  "dependencies": {
+    "dot": "^1.1.2",
+    "limoclient": "git+http://evgit/ft/limoclient.git#master",
+    "loopback-component-storage-mongo": "git+https://github.com/raghav135/loopback-component-storage-mongo.git#master",
+    "loopback-connector-ft": "git+http://evgit/ft/loopback-connector-ft.git#master",
+    "oe-cloud": "git+http://evgit/oecloud.io/oe-cloud.git#master",
+    "oe-connector-oracle": "git+http://evgit/oecloud.io/oe-connector-oracle.git#master",
+    "oracledb": "^1.13.1",
+    "passport": "0.2.2",
+    "passport-facebook": "1.0.3",
+    "passport-google-oauth": "0.1.5",
+    "passport-jwt": "^2.0.0",
+    "passport-local": "1.0.0",
+    "passport-oauth2": "1.1.2",
+    "passport-saml": "0.15.0",
+    "passport-twitter": "1.0.3",
+    "sysmo": "^0.1.0"
+  },
+  "scripts": {
+    "start": "node server/server"
+  }
+}

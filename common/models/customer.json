@@ -1,0 +1,51 @@
+{
+    "name": "Customer",
+    "base": "PersistedModel",
+    "properties": {
+        "transactionType": {
+          "required": true,
+          "type": "String"
+        },
+        "transactionSubType": {
+            "required": true,
+            "type": "String"
+        },
+        "serialNumber": {
+            "type": "Number"
+        },
+        "drOrCr" : {
+            "required": true,
+            "type": "String"
+        },
+        "ledger" : {
+            "required": true,
+            "type": "String"
+        },
+        "accountNumber" : {
+            "required": true,
+            "type": "String"
+        },
+        "amountCode" : {
+            "required": true,
+            "type": "Number"
+        },
+        "accountCode" : {
+            "required": true,
+            "type": "Number"
+        }, 
+        "remarks" : {
+            "required": true,
+            "type": "String"
+        },
+        "autoPost" : {
+            "default" : true,
+            "type": "Boolean"
+        },
+        "reversalType" : {
+            "type": "Number"
+        }      
+    }
+}
+
+
+

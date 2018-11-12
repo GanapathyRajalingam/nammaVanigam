@@ -1,0 +1,57 @@
+<dom-module id="ft-value">
+
+    <template>
+        <style include="ft-shared-styles shared-styles iron-flex iron-flex-alignment">
+            .label {
+                background-color: #f0f0f0;
+                padding-left : 16px;
+                border-left : 1px solid rgba(0,0,0,0.08);
+                border-bottom : 1px solid #ffffff;
+                @apply --paper-font-subhead;
+            }
+
+            .value {
+                padding-left : 16px;
+                background-color: #fff;
+                border-bottom : 1px solid rgba(0,0,0,0.08);
+                @apply --paper-font-subhead;
+            }
+
+            .row {
+                height: 40px;
+                @apply(--layout-horizontal);
+                @apply(--layout-center);
+                @apply(--layout-justified);
+            }
+
+        </style>
+        <div class="layout horizontal center-justified">
+            <div class="label row flex-2">
+                    <label class="">[[label]]</label>
+            </div>
+            <div class="value row flex-3">
+                <label>[[value]]</label>
+            </div>
+        </div>
+    </template>
+
+    <script>
+        Polymer({
+
+            is: "ft-value",
+            properties: {
+                label: {
+                    type: String
+                },
+                value: {
+                    type: Object
+                }
+            },
+            attached: function () {
+
+            }
+        });
+    </script>
+
+
+</dom-module>

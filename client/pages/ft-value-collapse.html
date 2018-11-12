@@ -1,0 +1,69 @@
+<dom-module id="ft-value-collapse">
+
+    <template>
+        <style include="ft-shared-styles shared-styles iron-flex iron-flex-alignment">
+            :host {
+                display: block;
+            }
+
+            paper-icon-button {
+                margin-right: 16px;
+            }
+
+            .value-header {
+                background-color: #f0f0f0;
+                padding-left: 16px;
+                border-left: 1px solid rgba(0, 0, 0, 0.08);
+                border-bottom: 1px solid #ffffff;
+                @apply --paper-font-title;
+                font-weight: normal;
+                height: 40px;
+                @apply --layout-horizontal;
+                @apply --layout-center;
+                @apply --layout-justified;
+            }
+        </style>
+        <div class="layout vertical value-wrapper">
+            <div class="value-header" on-tap="toggle">
+                <div>[[title]]</div>
+                <paper-icon-button icon="[[_collapseIcon(opened)]]"></paper-icon-button>
+            </div>
+            <iron-collapse opened="{{opened}}">
+                <content></content>
+            </iron-collapse>
+        </div>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            is: "ft-value-collapse",
+            properties: {
+                title: {
+                    type: String
+                },
+                opened: {
+                    type: Boolean
+                }
+            },
+            attached: function () {
+
+            },
+            toggle: function () {
+                this.set('opened', !this.opened);
+            },
+            _collapseIcon: function (collapsed) {
+                if(collapsed == true){
+                    return "icons:expand-less";
+                }
+                else{
+                    return "icons:expand-more";
+                }
+                //return collapsed ? "icons:expand-more" : "icons:expand-less";
+            }
+        });
+    </script>
+
+
+</dom-module>

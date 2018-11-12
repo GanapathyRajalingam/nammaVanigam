@@ -1,0 +1,21 @@
+[
+    { "name": "Anklet","localAlias": "", "itemNumber": 1 },
+    { "name": "Barrette","localAlias": "", "itemNumber": 2 },
+    { "name": "Belt Buckle","localAlias": "", "itemNumber": 3 },
+    { "name": "Belly Chain","localAlias": "Ottiyanam", "itemNumber": 4 },
+    { "name": "Bindi","localAlias": "NethiChudi", "itemNumber": 5 },
+    { "name": "Bracelet","localAlias": "Bracelet", "itemNumber": 6 },
+    { "name": "Collar Pin","localAlias": "", "itemNumber": 7 },
+    { "name": "Crown","localAlias": "", "itemNumber": 8 },
+    { "name": "Cufflink","localAlias": "", "itemNumber": 9 },
+    { "name": "Earring","localAlias": "Thoadu", "itemNumber": 10 },
+    { "name": "Lapel Pin","localAlias": "", "itemNumber": 11 },
+    { "name": "Necklace","localAlias": "Necklace", "itemNumber": 12 },
+    { "name": "Pendant","localAlias": "", "itemNumber": 13 },
+    { "name": "Ring","localAlias": "Modhiram", "itemNumber": 14 },
+    { "name": "Tiara","localAlias": "", "itemNumber": 15 },
+    { "name": "Tie Chain","localAlias": "", "itemNumber": 16 },
+    { "name": "Toe Ring","localAlias": "Metti", "itemNumber": 17 },
+    { "name": "Bangle","localAlias": "Vazhayal", "itemNumber": 18 },
+    { "name": "Locket","localAlias": "", "itemNumber": 19 }
+]

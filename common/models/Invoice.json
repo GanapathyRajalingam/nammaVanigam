@@ -1,0 +1,166 @@
+{
+      "name" : "Invoice",
+      "base": "PersistedModel",
+      "idInjection" : false,
+      "properties": {
+        "transactionType": {
+          "type": "string",
+          "required": true
+        },
+        "ProductType": {
+          "type": "string",
+          "required": true
+        },
+        "jewelleryType": {
+          "type": "string",
+          "required": true
+        },
+        "invoiceNum": {
+          "type": "number",
+          "required": true,
+          "id" : true
+        },
+        "Customer": {
+          "type": "string",
+          "required": true
+        },
+        "ItemPurity": {
+          "type": "string",
+          "required": true
+        },
+        "ItemType": {
+          "type": "string",
+          "required": true
+        },
+        "ItemDescription": {
+          "type": "string",
+          "required": true
+        },
+        "ItemCode": {
+          "type": "string",
+          "required": true
+        },
+        "Units": {
+          "type": "String",
+          "required": true
+        },
+        "mktPricePerUnit": {
+          "type": "number",
+          "required": true
+        },
+        "goldWtPerUnit": {
+          "type": "number",
+          "required": true
+        },
+        "stoneOtherWtPerUnit": {
+          "type": "number",
+          "required": true
+        },
+        "netWeight": {
+          "type": "number",
+          "required": true
+        },
+        "PricePerItem": {
+          "type": "number",
+          "required": true
+        },
+        "remarks": {
+          "type": "string",
+          "required": true
+        },
+        "itemBarCode": {
+          "type": "string",
+          "required": false
+        },
+        "itemQRCode": {
+          "type": "string",
+          "required": false
+        },
+        "Quantity": {
+          "type": "number",
+          "default": true
+        },
+        "transactionDate": {
+          "type": "date",
+          "default": true
+        },
+        "billedToCustomer": {
+          "type": "string",
+          "required": false
+        },
+        "shippedToCustomer": {
+          "type": "string",
+          "required": false
+        },
+        "grossAmount": {
+          "type": "number",
+          "required": true
+        },
+        "discountAmount": {
+          "type": "number",
+          "required": true
+        },
+        "discountPercent": {
+          "type": "number",
+          "required": true
+        },
+        "cgst": {
+          "type": "number",
+          "required": true
+        },
+        "sgst": {
+          "type": "number",
+          "required": true
+        },
+        "netAmount": {
+          "type": "number",
+          "required": true
+        },
+        "paidAmount": {
+          "type": "number",
+          "required": false
+        },
+        "balanceAmount": {
+          "type": "number",
+          "required": false
+        },
+        "exchgGoldRate": {
+          "type": "number",
+          "required": false
+        },
+        "exchgItem": {
+          "type": "string",
+          "required": false
+        },
+        "exchgGoldWt": {
+          "type": "number",
+          "required": false
+        },
+        "exchgStoneWt": {
+          "type": "number",
+          "required": false
+        },
+        "exchgItemAmount": {
+          "type": "number",
+          "required": false
+        },
+        "makingCharges": {
+          "type": "number",
+          "required": false
+        },
+        "wastageWt": {
+          "type": "number",
+          "required": false
+        },
+        "paymentMethod": {
+          "type": "string",
+          "required": true
+        },
+        "status": {
+          "type": "string",
+          "required": true
+        }
+      },
+      "relations": {},
+      "acls": []
+  }

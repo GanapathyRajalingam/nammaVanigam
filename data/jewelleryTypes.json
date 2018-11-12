@@ -1,0 +1,19 @@
+[
+    { "name": "Navratna","jtype": "Traditional", "category": "Bridal", "origin": "NA", "srlNum": 1 },
+    { "name": "Meenakari","jtype": "Traditional", "category": "Bridal", "origin": "Persia", "srlNum": 2 },
+    { "name": "MangoMala","jtype": "Traditional", "category": "Bridal", "origin": "NA", "srlNum": 3 },
+    { "name": "Antique","jtype": "Antique", "category": "Bridal", "origin": "NA", "srlNum": 4 },
+    { "name": "Filigree","jtype": "Royal", "category": "Bridal", "origin": "NA", "srlNum": 5 },
+    { "name": "Kaasu Maalai","jtype": "Traditional", "category": "Bridal", "origin": "NA", "srlNum": 6 },
+    { "name": "Diamond","jtype": "Diamond", "category": "Bridal", "origin": "NA", "srlNum": 7 },
+    { "name": "Temple","jtype": "Antique", "category": "Bridal", "origin": "NA", "srlNum": 8 },
+    { "name": "Kundan","jtype": "Traditional", "category": "Bridal", "origin": "Mughals", "srlNum": 9 },
+    { "name": "Bead","jtype": "Traditional", "category": "All", "origin": "Indus", "srlNum": 10 },
+    { "name": "Custom","jtype": "Fashion", "category": "All", "origin": "NA", "srlNum": 11 },
+    { "name": "Ivory","jtype": "Traditional", "category": "All", "origin": "Gujurat", "srlNum": 12 },
+    { "name": "Jadau","jtype": "Traditional", "category": "All", "origin": "Mughals", "srlNum": 13 },
+    { "name": "Lacquer","jtype": "Traditional", "category": "All", "origin": "Rajasthan", "srlNum": 14 },
+    { "name": "Pachchikam","jtype": "Traditional", "category": "All", "origin": "Gujurat", "srlNum": 15 },
+    { "name": "Stone","jtype": "Traditional", "category": "All", "origin": "NA", "srlNum": 16 },
+    { "name": "Tribal","jtype": "Antique", "category": "All", "origin": "NA", "srlNum": 17 }
+]

@@ -1,0 +1,530 @@
+<dom-module id="namma-app">
+    <template>
+        <style include="shared-styles iron-flex iron-flex-alignment iron-flex-factors">
+            :root {
+                --accent-color:#4285f4;
+                --light-primary-color: #4285f4;
+            }
+            app-toolbar {
+                background-color: #4285f4;
+                color: #fff;
+                height: 64px;
+            }
+
+            app-drawer-layout {
+                --app-drawer-layout-content-transition: margin 0.2s;
+            }
+
+            app-drawer {
+                --app-drawer-content-container: {
+                    background-color: #eee;
+                    width: 120px;
+                }
+            }
+
+            :host {
+                --ft-search-field-width: 200px;
+            }
+            /* width */
+            .newwidth-1::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            /* Track */
+            .newwidth-1::-webkit-scrollbar-track {
+                box-shadow: inset 0 0 0px rgb(170, 170, 170); 
+                border-radius: 10px;
+            }
+            
+            /* Handle */
+            .newwidth-1::-webkit-scrollbar-thumb {
+                background: rgb(170, 170, 170); 
+                border-radius: 10px;
+            }
+
+            /* Handle on hover */
+            .newwidth-1::-webkit-scrollbar-thumb:hover {
+                background: rgb(138, 137, 137); 
+            }
+            /* app-drawer-layout:not([narrow]) [drawer-toggle] {
+                display: none;
+            } */
+
+            .drawer-content {
+                padding-left: 16px;
+                padding-right: 16px;
+                margin-top: 80px;
+                height: calc(100vh - 80px);
+                overflow: auto;
+            }
+
+            #pages {
+                background-color: white;
+                height: calc(100vh - 64px);
+                overflow: auto;
+                width: 100vw;
+            }
+            .side-drawer{
+                background-color: white;
+                height: calc(100vh - 64px);
+                overflow: auto;
+                width: 100vw;
+            }
+
+            .logo {
+                margin-right: 16px;
+            }
+
+            .scroll {
+                overflow-y: auto;
+                height: 400px;
+                margin-bottom: 64px;
+                padding-bottom: 64px;
+            }
+
+            .newscroll {
+                /* overflow-y: auto; */
+                height: calc(100vh - 64px);
+            }
+            .newwidth {
+                width: 100px;
+                height: calc(100vh - 64px);
+                border-right: 1px solid #e7e7e7;
+            }
+            .newwidth-1 {
+                /* width: 160px;
+                height: calc(100vh - 64px); */
+                overflow: hidden;
+                border-right: 1px solid #e7e7e7;
+            }
+            .newwidth-1:hover {
+                overflow: auto;
+            }
+            .newwidth-1  > paper-listbox> paper-item{
+                border-bottom: 1px solid #353C48;
+            }
+            .newwidth > paper-listbox  > paper-item {
+                padding: 0px
+            }
+            .newwidth > paper-listbox  > paper-item > div {
+                line-height: 0px;
+            }
+            .newwidth > paper-listbox  > paper-item > div > ft-dropdown {
+                margin: 0px;
+            }
+            .content {
+                height: calc(100vh - 64px);
+            }
+            paper-listbox  > paper-item.iron-selected {
+                border-left : 3px solid var(--accent-color);               
+            }
+            paper-listbox  > paper-item {
+                /* border-bottom : 3px solid #acacac; */
+                font-size: 12px;
+            }
+            paper-item.iron-selected {
+                    color: var(--light-primary-color);
+                    /* background-color : #fdfdfdfb; */
+                }
+            #leftpanefont {
+                
+                display: inline-grid; 
+            }
+            #leftpanefont-1 {
+                display: inline-grid;
+                margin-left: 6px;
+                margin-right: 12px;
+            }
+            paper-item> div {
+                display: -ms-inline-grid;
+            }
+            #icontext {
+                text-align: center;
+                font-size: 12px;
+            }
+            .panelOptions{
+                height: calc(100vh - 64px);
+                overflow: auto;
+            }
+            iron-dropdown {
+                border: 1px solid gray;
+                background: white;
+                font-size: 2em;
+            }
+
+            .dropdown-content {
+                line-height: 25px;
+                border-radius: 5px;
+                box-shadow: 0px 2px 5px #ccc;
+                /* padding-left: 10px; */
+
+            }  
+            .dropdown-content > paper-listbox > paper-item {
+                background-color: #eeecec;
+            }
+            .dropdown-content > paper-listbox {
+                padding: 0px;
+            }
+            .drop-position {
+                outline: none;
+                position: fixed;
+                /* left: 75px;
+                top: 64px;
+                z-index: 103; */
+            }
+            
+            .divider {
+                width: 1px;
+                height: 30px;
+                margin: 6px 10px;
+                padding: 0;
+                background-color:  #e7e7e7;
+                /* background-color: rgb(102, 98, 98); */
+            }
+
+            .notifications-dialog {
+                width: 200px;
+                position: fixed;
+                right: 0;
+                top: 0;
+                height: 100%;
+                margin-right: calc(100vw - 300px);
+                margin-left: 0px;
+                margin-top: 64px;
+                box-shadow: 0 2px 4px 0 rgba(0,0,0,0.50);
+                background-color: rgb(37, 37, 39);
+            }
+            paper-dialog {
+                max-height: calc(100vh - 64px);
+                outline: none; 
+                z-index: 103;
+                transform-origin: 0px 50% 0px; 
+                box-sizing: border-box; 
+                /* max-height: 592px;  */
+                /* max-width: 344px; */
+                background-color: rgb(37, 37, 39);
+            }
+            .background {
+                background-color: #353C48;
+                color: white;
+            }
+            paper-dialog > paper-listbox {
+                background-color: rgb(37, 37, 39);
+                color: white;
+            }
+        </style>
+        <app-location route="{{_route}}"></app-location>
+
+        <oe-message-handler fit-bottom duration=3000 persist-on="error,warning"></oe-message-handler>
+
+        <app-drawer-layout force-narrow>
+                <app-toolbar>
+                        <paper-item id="leftpanefont-1" on-tap="_goHome"><div id="icontext"><iron-icon icon="icons:home" ></iron-icon></div></paper-item>
+                    <!-- <iron-icon class="logo" icon="menu" on-tap="_goHome"></iron-icon> -->
+                    <div class="divider"></div>
+                    <div main-title on-tap="_goHome">Namma Vanigam</div>
+                </app-toolbar>
+            <!--  -->
+            <div class="layout horizontal content">
+            <div class="layout horizontal background">
+                <div class="newwidth ">
+                        <paper-listbox class="layout vertical background" selected="{{selectedtab}}" attr-for-selected="name" scrollable>
+                                
+                                <paper-item name="Inventory" onclick="Inventory.open()" id="leftpanefont"><div id="icontext"><iron-icon icon="icons:store" ></iron-icon></div><div id="icontext">Inventory</div></paper-item>
+                                <paper-item name="Invoice" onclick="Invoice.open()" id="leftpanefont"><div id="icontext"><iron-icon icon="icons:receipt" ></iron-icon></div><div id="icontext">Invoice</div></paper-item>
+                                <paper-item name="Suppliers" onclick="Suppliers.open()" id="leftpanefont"><div id="icontext"><iron-icon icon="icons:perm-identity" ></iron-icon></div><div id="icontext">Suppliers</div></paper-item>                               
+                                <paper-item name="Dealers" onclick="Dealers.open()" id="leftpanefont"><div id="icontext"><iron-icon icon="communication:business" ></iron-icon></div><div id="icontext">Dealers</div></paper-item>
+                                <paper-item name="Customers" onclick="Customers.open()" id="leftpanefont"><div id="icontext"><iron-icon icon="icons:supervisor-account" ></iron-icon></div><div id="icontext">Customers</div></paper-item>
+                                <paper-item name="Orders" onclick="Orders.open()" id="leftpanefont"><div id="icontext"><iron-icon icon="icons:add-shopping-cart" ></iron-icon></div><div id="icontext">Orders</div></paper-item>
+
+                                <paper-item name="PnL" onclick="PnL.open()" id="leftpanefont"><div id="icontext"><iron-icon icon="icons:account-balance-wallet" ></iron-icon></div><div id="icontext">Profit And Loss</div></paper-item>
+                                <paper-item name="Revenue" onclick="Revenue.open()" id="leftpanefont"><div id="icontext"><iron-icon icon="icons:account-balance" ></iron-icon></div><div id="icontext">Revenue</div></paper-item>
+                                 
+				                <paper-item id="leftpanefont" ><div id="icontext"><ft-dropdown vertical-align="bottom" horizontal-align="left" ><paper-icon-button class = "dropdown-trigger" icon="icons:more-horiz"></paper-icon-button>
+                                    <div class = "dropdown-content ">
+                                            <paper-listbox class="layout vertical" selected="{{selectedtab}}" attr-for-selected="name" scrollable>
+                                                
+                                            </paper-listbox>
+                                        </div>
+                                        </ft-dropdown>
+                                    </div>
+                                </paper-item>
+                                
+                            </paper-listbox>
+                </div>
+
+                <div id="dialog">
+                        <paper-dialog id="Inventory" entry-animation="slide-from-left-animation" exit-animation="fade-out-animation" class="notifications-dialog newwidth-1"
+                        role="dialog" tabindex="-1" >
+                            <paper-listbox attr-for-selected="href" selected="{{selectedurl}}" fallback-selection="None" on-tap="_dismiss">
+                                <paper-item href="/stocks">Inventory Details</paper-item>    
+                                <paper-item href="/rings">Rings</paper-item>
+                                    <paper-item href="/chains">Chains</paper-item>
+                                    <paper-item href="/bangles">Bangles</paper-item>
+                                    <paper-item href="/goldbars">Gold Bars</paper-item>       
+                                </paper-listbox>
+                        </paper-dialog>
+                    </div>
+                    
+                    <div id="dialog">
+                            <paper-dialog id="Invoice" entry-animation="slide-from-left-animation" exit-animation="fade-out-animation" class="notifications-dialog newwidth-1"
+                            role="dialog" tabindex="-1" >
+                                <paper-listbox attr-for-selected="href" selected="{{selectedurl}}" fallback-selection="None" on-tap="_dismiss">
+                                        <paper-item href="/purchases">Purchases</paper-item>
+                                        <paper-item href="/sales">Sales</paper-item>      
+                                    </paper-listbox>
+                            </paper-dialog>
+                        </div>
+
+                        <div id="dialog">
+                                <paper-dialog id="Suppliers" entry-animation="slide-from-left-animation" exit-animation="fade-out-animation" class="notifications-dialog newwidth-1"
+                                role="dialog" tabindex="-1" >
+                                    <paper-listbox attr-for-selected="href" selected="{{selectedurl}}" fallback-selection="None" on-tap="_dismiss">
+                                            <paper-item href="/localsuppliers">Local Suppliers</paper-item>
+                                            <paper-item href="/nationalsuppliers">National Suppliers</paper-item>    
+                                        </paper-listbox>
+                                </paper-dialog>
+                            </div>
+
+                            <div id="dialog">
+                                    <paper-dialog id="Dealers" entry-animation="slide-from-left-animation" exit-animation="fade-out-animation" class="notifications-dialog newwidth-1"
+                                    role="dialog" tabindex="-1" >
+                                        <paper-listbox attr-for-selected="href" selected="{{selectedurl}}" fallback-selection="None" on-tap="_dismiss">
+                                                <paper-item href="/localdealers">Local Dealers</paper-item>
+                                                <paper-item href="/nationaldealers">National Dealers</paper-item>    
+                                            </paper-listbox>
+                                    </paper-dialog>
+                                </div>
+
+                                <div id="dialog">
+                                        <paper-dialog id="Customers" entry-animation="slide-from-left-animation" exit-animation="fade-out-animation" class="notifications-dialog newwidth-1"
+                                        role="dialog" tabindex="-1" >
+                                            <paper-listbox attr-for-selected="href" selected="{{selectedurl}}" fallback-selection="None" on-tap="_dismiss">
+                                                    <paper-item href="/localcustomers">Local Customers</paper-item>
+                                                    <paper-item href="/nationalcustomers">Outside Customers</paper-item>    
+                                                </paper-listbox>
+                                        </paper-dialog>
+                                    </div>
+
+                                    <div id="dialog">
+                                            <paper-dialog id="Orders" entry-animation="slide-from-left-animation" exit-animation="fade-out-animation" class="notifications-dialog newwidth-1"
+                                            role="dialog" tabindex="-1" >
+                                                <paper-listbox attr-for-selected="href" selected="{{selectedurl}}" fallback-selection="None" on-tap="_dismiss">
+
+                                                </paper-listbox>
+                                            </paper-dialog>
+                                        </div>
+
+                                        <div id="dialog">
+                                                <paper-dialog id="PnL" entry-animation="slide-from-left-animation" exit-animation="fade-out-animation" class="notifications-dialog newwidth-1"
+                                                role="dialog" tabindex="-1" >
+                                                    <paper-listbox attr-for-selected="href" selected="{{selectedurl}}" fallback-selection="None" on-tap="_dismiss">
+    
+                                                    </paper-listbox>
+                                                </paper-dialog>
+                                            </div>
+    
+                                            <div id="dialog">
+                                                    <paper-dialog id="Revenue" entry-animation="slide-from-left-animation" exit-animation="fade-out-animation" class="notifications-dialog newwidth-1"
+                                                    role="dialog" tabindex="-1" >
+                                                        <paper-listbox attr-for-selected="href" selected="{{selectedurl}}" fallback-selection="None" on-tap="_dismiss">
+        
+                                                        </paper-listbox>
+                                                    </paper-dialog>
+                                                </div>
+            </div>
+
+            <iron-pages flex id="pages" selected="[[page]]" attr-for-selected="route-path" selected-attribute="page-selected">
+                <home-page route-path="/"></home-page>
+                <purchases-page route-path="/purchases"></purchases-page>
+                <purchases-form route-path="/purchases/:id"></purchases-form>
+                <inventory-page route-path="/stocks"></inventory-page>
+                <inventory-form route-path="/stocks/:id"></inventory-form>
+            </iron-pages>
+        </div>
+            
+        </app-drawer-layout>
+
+    </template>
+
+    <script>
+        window.oe_navigate_to = function (path, state) {
+            window.history.pushState(state, undefined, path);
+            Polymer.Base.fire('location-changed', state, {
+                node: window
+            });
+        };
+
+        Polymer({
+            is: 'namma-app',
+            properties: {
+                routes: {
+                    type: Object
+                },
+                subroutes: {
+                    type: Object,
+                    value: {
+
+                    }
+                },
+                selectedurl : {
+                    type: "String",
+                    observer: '_urlChanged'
+                },
+                userRoute: {
+                    type: "String"
+                },
+                page: {
+                    type: "String",
+                    observer: '_pageChanged'
+                },
+                list: {
+                    type: "Object",
+                    value: function () {
+                        return [];
+                    }
+                },
+                _route: { type: Object, observer: '_routeChanged' },
+                _scrollPositionMap: {
+                    type: Object,
+                    value: function () {
+                        return {};
+                    }
+                }
+            },
+            listeners: {
+                'iron-select': '_selected',
+                'iron-deselect': '_deselected',
+            },
+            behaviors: [
+                Polymer.IronSelectableBehavior
+            ],
+            _openList: function() {
+                console.log("OPEN")
+                this.$.dropdown.open();
+            },
+            lauchSideBar: function () {
+                var drawerEle = document.querySelector('app-drawer#drawer');
+                if (drawerEle) {
+                    drawerEle.toggle();
+                }
+            },
+            lauchSideBar: function () {
+                var drawerEle = document.querySelector('app-drawer#drawer');
+                if (drawerEle) {
+                    drawerEle.toggle();
+                }
+            },
+            _goHome: function (e) {
+                oe_navigate_to("/");
+                this.set('selectedtab',"");
+                this.set('selectedurl',"");
+            },
+            _selected: function (e) {
+                //console.log('_selected');
+            },
+            _deselected: function (e) {
+                //console.log('_deselected');
+            },
+            _urlChanged : function (url) {
+                oe_navigate_to(url);
+            },
+            _formRoutes() {
+                var el = this.$.pages;
+                var i;
+                if (el) {
+                    for (i = 0; i < el.children.length; i++) {
+                        var path = el.children[i].getAttribute("route-path");
+                        if (path) {
+                            this.routes[path] = el.children[i];
+                        }
+                    }
+                }
+            },
+            ready: function () {
+                this.set('selectedtab','home')
+            },
+            _routeChanged: function (newRoute, oldRoute) {
+                if (!this.routes) {
+                    this.routes = {};
+                    this._formRoutes();
+                }
+                if (this.page) {
+                    this._scrollPositionMap[this.page] = window.pageYOffset;
+                }
+                var drawerEle = document.querySelector('app-drawer#drawer');
+                if (drawerEle) {
+                    if (drawerEle.opened) {
+                        drawerEle.close();
+                    }
+                }
+                var path = newRoute.path;
+                if (this.routes[path]) {
+                    if (this.page != path) {
+                        this.set('page', path);
+                    } else {
+                        console.log('fire location chnage on page ');
+                        this.$.pages.selectedItem.fire('location-changed', newRoute);
+                    }
+                    return;
+                }
+                var arr = path.split("/");
+                arr[arr.length - 1] = ':id';
+                path = arr.join("/");
+                if (this.routes[path]) {
+                    if (this.page != path) {
+                        this.set('page', path);
+                    } else {
+                        this.$.pages.selectedItem.fire('location-changed', newRoute);
+                    }
+                    return;
+                }
+                arr.splice(-1, 1);
+                path = arr.join("/");
+                if (this.routes[path]) {
+                    if (this.page != path) {
+                        this.set('page', path);
+                    } else {
+                        console.log('fire location chnage on page ');
+                        this.$.pages.selectedItem.fire('location-changed', newRoute);
+                    }
+                    return;
+                }
+                this.set('page', newRoute.path);
+            },
+            _pageChanged: function (page, oldPage) {
+                //console.log('page change ', oldPage, ' to ', page);
+                // check if already loaded
+
+                var self = this;
+                var el = this.routes[page];
+                if (el) {
+                    url = '/pages/' + el.tagName.toLowerCase() + ".html";
+                    this.importHref(url, function (e) {
+                        console.log('loaded ', url);
+                        var map = self._scrollPositionMap;
+                        if (map[page]) {
+                            if (map[page] != null) {
+                                Polymer.AppLayout.scroll({ top: map[page], behavior: 'silent' });
+                            } else if (this.isAttached) {
+                                Polymer.AppLayout.scroll({ top: 0, behavior: 'silent' });
+                            }
+                        }
+                    }, function (e) {
+                        console.log('could not load ' + page);
+                    });
+                }
+            },
+            _dismiss: function() {
+                // this.$.staticData.close();
+                const dialogElems= this.$.dialog.querySelectorAll('[id]');
+                // console.log(x);
+                for(let dialog of dialogElems) {
+                    dialog.close();
+                }
+            }
+        });
+
+
+</script>
+</dom-module>

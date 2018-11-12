@@ -1,0 +1,43 @@
+{
+  "db": {
+    "host": "localhost",
+    "port": 27018,
+    "url": "mongodb://localhost:27018/commondb",
+    "database": "commondb",
+    "password": "admin",
+    "name": "db",
+    "connector": "mongodb",
+    "user": "admin",
+    "connectionTimeout": 50000
+  },
+  "postgres": {
+    "host": "localhost",
+    "port": 5432,
+    "url": "postgres://postgres:postgres@localhost:5432/postgres",
+    "database": "postgres",
+    "password": "postgres",
+    "name": "postgres",
+    "connector": "memory",
+    "user": "postgres",
+    "max": 50,
+    "connectionTimeout": 50000
+  },
+  "oracledb": {
+    "name": "db",
+    "connector1": "oe-connector-oracle",
+    "connector" : "memory",
+    "database": "ftdb",
+    "host": "192.168.99.100",
+    "port": 1521,
+    "password": "tiger",
+    "user": "scott",
+    "lazyConnect": true
+  },
+  "gridfs_db": {
+    "host": "localhost",
+    "port": 27018,
+    "name": "gridfs_db",
+    "url": "mongodb://localhost:27018/gridfs_db",
+    "connector": "loopback-component-storage-mongo"
+  }
+}

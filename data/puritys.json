@@ -1,0 +1,19 @@
+[
+    { "code": "G-24k-99.5","purityName": "24k", "fineness": "99.5", "productType": "GOLD", "srlNum": 1 },
+    { "code": "G-22k-91.6","purityName": "22k", "fineness": "91.6", "productType": "GOLD", "srlNum": 2 },
+    { "code": "G-18k-75","purityName": "18k", "fineness": "75", "productType": "GOLD", "srlNum": 3 },
+    { "code": "G-14k-58.5","purityName": "14k", "fineness": "58.5", "productType": "GOLD", "srlNum": 4 },
+    { "code": "G-12k-50","purityName": "12k", "fineness": "50", "productType": "GOLD", "srlNum": 5 },
+    { "code": "G-10k-41.7","purityName": "10k", "fineness": "41.7", "productType": "GOLD", "srlNum": 6 },
+    { "code": "G-9k-37.5","purityName": "9k", "fineness": "37.5", "productType": "GOLD", "srlNum": 7 },
+    { "code": "S-99.9-PureSilver","purityName": "PureSilver", "fineness": "99.9", "productType": "SILVER", "srlNum": 8 },
+    { "code": "S-95.8-Brittania","purityName": "BrittaniaSilver", "fineness": "95.8", "productType": "SILVER", "srlNum": 9 },
+    { "code": "S-92.5-Sterling","purityName": "SterlingSilver", "fineness": "92.5", "productType": "SILVER", "srlNum": 10 },
+    { "code": "S-80-Jewellery","purityName": "JewellerySilver", "fineness": "80", "productType": "SILVER", "srlNum": 11 },
+    { "code": "S-90-Coin","purityName": "CoinSilver", "fineness": "90", "productType": "SILVER", "srlNum": 12 },
+    { "code": "S-80-German","purityName": "GermanSilver", "fineness": "80", "productType": "SILVER", "srlNum": 13 },
+    { "code": "S-83.5-German","purityName": "GermanSilver", "fineness": "83.5", "productType": "SILVER", "srlNum": 14 },
+    { "code": "PT-850","purityName": "850", "fineness": "850", "productType": "PLATINUM", "srlNum": 15 },
+    { "code": "PT-900","purityName": "900", "fineness": "900", "productType": "PLATINUM", "srlNum": 16 },
+    { "code": "PT-950","purityName": "950", "fineness": "950", "productType": "PLATINUM", "srlNum": 17 }    
+]

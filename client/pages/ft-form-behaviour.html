@@ -1,0 +1,99 @@
+<script>
+  window.ft = window.ft || {};
+  window.ft.FormBehaviourImpl = {
+    properties: {
+      pageSelected: {
+        type: "String",
+        observer: "_pageSelectChange"
+      }
+    },
+    ready: function () {
+      this.disableAutoFetch = false;
+    },
+    listeners: {
+      'location-changed': '_locationChanged',
+      'oe-formdata-inserted': '_handleInsert',
+      'oe-validator-error' : '_handleValidationError'
+    },
+    _handleValidationError : function(e) {
+        console.log('error ', e.detail);
+    },
+    handleNew: function (e) {
+      var res = window.location.pathname.split('/');
+      if (res.length > 1) {
+        res[res.length - 1] = 'new';
+      }
+      var path = res.join('/');
+      window.history.pushState({}, undefined, path);
+      this.doClear.call(this, e);
+      this._fetchDefault();
+    },
+    _handleInsert: function (e) {
+      console.log(e);
+      if (e.detail.data.fbo_number) {
+        var res = window.location.pathname.split('/');
+        if (res.length > 2) {
+            if (res[res.length - 1] == 'new') {
+              res[res.length - 1] = e.detail.data.fbo_number
+            }
+        }
+        var path = res.join('/');
+        window.history.pushState(null, undefined, path);
+        //location.href = url;
+      }
+    },
+    _fetchDefault: function (e) {
+      var self = this;
+      var ajaxCall = document.createElement('oe-ajax');
+      ajaxCall.contentType = 'application/json';
+      ajaxCall.handleAs = 'json';
+      ajaxCall.url = this.resturl + "/default";
+      ajaxCall.method = 'GET';
+      ajaxCall.addEventListener('response', function (event) {
+        self.set(self.modelAlias, event.detail.response);
+      });
+      ajaxCall.addEventListener('error', function (err) {
+        self.fire('oe-show-error', OEUtils.extractErrorMessage(err));
+      });
+      ajaxCall.generateRequest();
+    },
+    _handleLocationChange: function (e) {
+      var self = this;
+      var res = window.location.pathname.match(/^\/(\w+)\/(\w+)/);
+      if (res && res.length == 3) {
+        console.log('set modelId ', res[2]);
+        this.set('modelId', res[2]);
+        if (self.modelAlias) {
+          console.log('fetch model');
+          if (this.modelId != "new") {
+            this._doFetch(this.modelId);
+          } else {
+            this._fetchDefault();
+          }
+        } else {
+          console.log('no modelAlias');
+        }
+      }
+    },
+    _locationChanged: function (e) {
+      console.log('_locationChanged ');
+      this._handleLocationChange();
+    },
+    _pageSelectChange: function (x, y) {
+      console.log('page changed ');
+      var selected = this.hasAttribute('page-selected');
+      var self = this;
+      if (selected) {
+        this._handleLocationChange();
+      }
+    },
+    attached: function (e) {
+      console.log('atatched ft form behaviour');
+      this._handleLocationChange();
+    }
+  }
+
+  ft.FormBehaviour =
+    [OEUtils.FormValidationBehavior, OEUtils.ModelHandler, OEUtils.FormMessagesBehavior, Polymer.IronResizableBehavior, ft.FormBehaviourImpl];
+
+</script>

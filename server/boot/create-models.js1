@@ -1,0 +1,135 @@
+var loopback = require("loopback");
+var inflection = require("inflection");
+var path = require("path");
+var fs = require("fs");
+
+module.exports = function (app) {
+
+  var metaList = [
+    {fbo_type:"Invoice", category:"Common"},
+    {fbo_type:"Product", category:"Common"},
+    {fbo_type:"Orders", category:"Common"},
+    {fbo_type:"Customers", category:"Common"},
+    {fbo_type:"Employees", category:"Common"},
+    {fbo_type:"Suppliers", category:"Common"}
+  ];
+
+  var modelMappings = {
+    Product: {
+      name: "Product",
+      script: "product"
+    },
+    Orders: {
+      name: "Orders",
+      script: "orders"
+    }
+  };
+
+  function createModels(metaList) {
+
+    console.log("Number of models being loaded ", metaList.length);
+    metaList.forEach(function (meta) {
+      var modelMapping = modelMappings[meta.fbo_type];
+      var config = {
+        name: modelMapping.name,
+        base: "BaseFBO",
+        options: {
+          fbo_type: meta.fbo_type
+        },
+        properties: {}
+      };
+      if (modelMapping.plural) {
+        config.plural = modelMapping.plural;
+      } else {
+        config.plural = inflection.pluralize(config.name);
+      }
+      config.relations = {};
+      var keys = Object.keys(meta.properties);
+
+      keys.forEach(function (key) {
+        var fieldmeta = meta.properties[key];
+
+
+        if (!fieldmeta.is_system_maintained) {
+          var prop = {};
+          prop.required = fieldmeta.required;
+          if (fieldmeta.type == "Object") {
+            if (fieldmeta.sub_object_type == "Object") {
+              prop.type = Object;
+            } else if (modelMappings[fieldmeta.sub_object_type]) {
+              config.relations[key + "_relation"] = {
+                type: "embedsOne",
+                model: modelMappings[fieldmeta.sub_object_type].name,
+                property: key
+              };
+              return;
+              //prop.type = [modelMappings[fieldmeta.sub_object_type].name];
+            } else {
+              prop.type = [Object];
+            }
+          } else if (fieldmeta.type == "Array") {
+            if (fieldmeta.sub_object_type == "Object") {
+              prop.type = [Object];
+            } else if (modelMappings[fieldmeta.sub_object_type]) {
+              config.relations[key + "_relation"] = {
+                type: "embedsMany",
+                model: modelMappings[fieldmeta.sub_object_type].name,
+                property: key
+              };
+              return;
+              //prop.type = [modelMappings[fieldmeta.sub_object_type].name];
+            } else {
+              prop.type = [Object];
+            }
+          } else {
+            prop.type = typemap[fieldmeta.type] ?
+              typemap[fieldmeta.type] :
+              "String";
+          }
+
+          if (fieldmeta.list) {
+            prop.in = fieldmeta.list;
+          }
+
+          config.properties[key] = prop;
+        }
+      });
+
+      if (modelMapping.overrides) {
+        Object.keys(modelMapping.overrides).forEach(function (key) {
+          var obj = config.properties[key] || {};
+          config.properties[key] = Object.assign(
+            obj,
+            modelMapping.overrides[key]
+          );
+        });
+      }
+  
+      var writemodels = false;
+      if (writemodels) {
+          var fname = path.resolve("common/ftmodel/" + meta.fbo_type + ".json");
+          fs.writeFile(fname, JSON.stringify(config,null,2), function (err) {
+            if (err) throw err;
+            console.log('Saved model File ' + meta.fbo_type);
+          });
+      }
+
+      var Model = loopback.createModel(config);
+      Model.category = meta.category;
+      Model.clientPlural = config.clientPlural;
+      Model.clientModelName = config.name;
+      if (modelMapping.script) {
+        require("../../common/models/" + modelMapping.script)(Model);
+      }
+      app.model(Model, {
+        dataSource: app.datasources.db
+      });
+    });
+  }
+
+
+  console.log("load Business models ");
+  var connector = app.datasources["db"].connector;
+  createModels(metaList);
+
+};

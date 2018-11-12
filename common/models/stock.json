@@ -1,0 +1,62 @@
+{
+    "name" : "Stock",
+    "base": "PersistedModel",
+    "idInjection" : false,
+    "properties": {
+      "productType": {
+        "type": "string",
+        "required": true
+      },
+      "itemCode": {
+        "type": "string",
+        "required": true
+      },
+      "item": {
+        "type": "string",
+        "required": true
+      },
+      "stockNum": {
+        "type": "number",
+        "required": true,
+        "id" : true
+      },
+      "vendor": {
+        "type": "string",
+        "required": true
+      },
+      "unitsInHand": {
+        "type": "number",
+        "required": true
+      },
+      "maxUnitsLimit": {
+        "type": "number",
+        "required": false
+      },
+      "minUnitsLimit": {
+        "type": "number",
+        "required": false
+      },
+      "outGoingOrders": {
+        "type": "number",
+        "required": false
+      },
+      "futureBalanceUnits": {
+        "type": "number",
+        "required": false
+      },
+      "outOfStockFrom": {
+        "type": "date",
+        "required": false
+      },
+      "outOfStockTo": {
+        "type": "date",
+        "required": false
+      },
+      "needsReOrder": {
+        "type": "boolean",
+        "required": false
+      }
+    },
+    "relations": {},
+    "acls": []
+}

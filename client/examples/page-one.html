@@ -1,0 +1,206 @@
+<link rel="import" href="/pages/fin-search-input.html">
+<link rel="import" href="/pages/sample-row.html">
+<link rel="import" href="./pwc-type-ahead.html">
+<link rel="import" href="./trade-comp.html">
+
+<dom-module id="page-one">
+
+    <template>
+        <style>
+         
+            .toggle {
+                background-color: #fff;
+            }
+
+            .item-row {
+                border-bottom: solid 1px rgba(0, 0, 0, 0.2);
+            }
+
+            .item-row:hover {
+                background-color: rgba(0, 0, 0, 0.2);
+            }
+
+            .edit-form {
+                padding: 16px;
+                background-color: #fff;
+                border-bottom: solid 1px grey;
+            }
+
+            #h1 {
+
+                color: white;
+            }
+
+            #h2 {
+                background-color: black;
+                color: white;
+            }
+
+
+            #h1>paper-item {
+                background-color: rgb(0, 183, 255);
+                ;
+            }
+
+            #h2>paper-item {
+                background-color: rgb(81, 84, 85);
+                color: white;
+            }
+
+            #h1>fin-search-input {
+                background-color: rgb(0, 183, 255);
+                ;
+            }
+
+            .list {
+                height: 70vh;
+                overflow-y: scroll;
+            }
+
+            .fields-container>* {
+                margin: 0px 16px;
+            }
+
+            paper-button[primary] {
+                background-color: blue;
+                color: white;
+            }
+
+            paper-button[vertical] {
+                margin: 16px;
+            }
+
+            .page-header {
+                background-color: rgb(0, 183, 255);
+                color: white;
+            }
+        </style>
+
+        <paper-input label="cpty name" value={{sec_buy_sell.cpty.name}}></paper-input>
+       before my comp
+
+        <trade-comp trade={{sec_buy_sell}}>
+                <template>
+                        It works [[cpty.name]]
+                </template>
+        </trade-comp>
+
+        after my comp
+        <!-- <pwc-type-ahead items={{list}}> 
+            <template>
+                    [[items.length]]
+            </template>
+        </pwc-type-ahead> -->
+
+        <!-- <iron-list items="{{list}}">
+                <template>
+                    <sample-row row={{item}}></sample-row>
+                </template>
+            </iron-list>
+
+        <iron-list items="{{list}}">
+            <template>
+                <paper-item>
+                    <div>[[_toCaps(item.name)]]</div>
+                </paper-item>
+            </template>
+        </iron-list> -->
+
+        <oe-ajax on-response="_uponFetch" auto url="[[rootPath]]api/data/departments" id="xhrdefault" method="GET" content-type="application/json"></oe-ajax>
+        <!-- <div id="h1" class="layout horizontal justified">
+                <paper-item class="flex-2">Department</paper-item>
+            <fin-search-input value="{{searchString}}"></fin-search-input>
+            </div>
+        <div id="h2" class="layout horizontal item-row">
+                <paper-item class="flex-2">Name</paper-item>
+                <paper-item class="flex-4">Description</paper-item>
+                <paper-item class="flex-2">Last Updated</paper-item>
+                <paper-item class="flex">
+                </paper-item>
+            </div>
+        <div class="list">
+         
+
+            </iron-list>
+            <template id="repeater" is="dom-repeat" items="{{list}}">
+                <div id="p0">
+                    <paper-item id="p1" class="layout horizontal item-row" on-tap="_toggleOpened">
+                        <div class="flex-2">[[item.data.name]]</div>
+                        <div class="flex-4">[[item.data.description]]</div>
+                        <div class="flex-2">[[_getDate(item.data.trantime)]]</div>
+                        <div class="flex toggle">
+                            <iron-icon icon="[[_toggleIcon(item)]]"></iron-icon>
+                        </div>
+                    </paper-item>
+                    <iron-collapse id="p2" class="content" opened="[[item.opened]]">
+                        <div class="edit-form">
+                            <div class="layout horizontal fields-container">
+                                <paper-input class="flex-2" label="Name" value={{item.edit.name}}></paper-input>
+                                <paper-input class="flex-2" label="Description" value={{item.edit.description}}></paper-input>
+                            </div>
+                            <div class="layout horizontal center-center">
+                                <paper-button primary vertical on-tap="closeEdit" class="noflex">Save</paper-button>
+                            </div>
+                        </div>
+                    </iron-collapse>
+                </div>
+            </template>
+        </div> -->
+    </template>
+
+    <script>
+        Polymer({
+
+            is: "page-one",
+            properties: {
+                field1: {
+                    type: String
+                },
+                vm: {
+                    type: Object
+                },
+                list: {
+                    type: Object,
+                    value: []
+                },
+                sec_buy_sell : {
+                    type : Object,
+                    value : {cpty:{name:'abn', fbo_id_num:34}}
+                }
+            },
+            _toCaps: function (e) {
+                console.log('eee', 23);
+                return e.toUpperCase() + e.toLowerCase();
+            },
+            _uponFetch: function (e) {
+                if (e.detail.response) {
+                    this.set('list', e.detail.response);
+                }
+            },
+            _getDate: function (e) {
+                d = new Date(e);
+                return d.toLocaleDateString();
+            },
+            closeEdit: function (e) {
+                e.model.set('item.data', JSON.parse(JSON.stringify(e.model.item.edit)));
+                e.model.set('item.opened', false);
+            },
+            _toggleOpened: function (e) {
+                var obj = e.model.item;
+                if (!obj.opened && !obj.edit) {
+                    e.model.set('item.edit', JSON.parse(JSON.stringify(obj.data)));
+                }
+                //e.currentTarget.parentElement.querySelector('iron-collapse').toggle();
+                e.model.set('item.opened', !obj.opened);
+            },
+            _toggleIcon: function (item) {
+                return item.opened ? 'icons:expand-less' : 'icons:expand-more';
+            },
+            attached: function () {
+
+            }
+        });
+    </script>
+
+
+</dom-module>

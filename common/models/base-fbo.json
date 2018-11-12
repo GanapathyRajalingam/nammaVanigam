@@ -1,0 +1,11 @@
+{
+    "name": "BaseFBO",
+    "base": "PersistedModel",
+    "idInjection": false,
+    "properties": {
+       
+    },
+    "validations": [],
+    "relations": {},
+    "acls": []
+}

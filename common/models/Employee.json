@@ -1,0 +1,54 @@
+{
+    "name": "Employee",
+    "base": "PersistedModel",
+    "properties": {
+        "FirstName": {
+            "required": true,
+            "type": "String"
+        },
+        "LastName": {
+            "required": true,
+            "type": "String"
+        },
+        "Identity": {
+            "required": true,
+            "type": "String"
+        },
+        "MobileNumber": {
+            "required": true,
+            "type": "Number"
+        },
+        "Status": {
+            "type": "String"
+        },
+        "KYC": {
+            "type": "String"
+        },
+        "Age": {
+            "type": "Number"
+        },
+        "City" : {
+            "type": "String"
+        },
+        "Address" : {
+            "type": "String"
+        },
+        "Gender" : {
+            "type": "String"
+        },
+        "Hireable" : {
+            "type": "Boolean"
+        },
+        "IsActive" : {
+            "type": "Boolean"
+        },
+        "ValidTill" : {
+            "type": "Date"
+        },
+        "ValidFrom" : {
+            "type": "Date"
+        }
+    }
+}
+
+

@@ -1,0 +1,34 @@
+{
+    "name": "Item",
+    "base": "PersistedModel",
+    "properties": {
+        "name": {
+            "type": "string",
+            "reqired": true
+        },
+        "description" : {
+            "type": "string",
+            "required" : true,
+            "inclusion" : {"in": ["male","female"]},
+            "in": ["male","female"]
+        },
+        "fbo_number" : {
+            "type" : "number"
+        }
+    },
+    "validations": [],
+    "relations": {
+        "productRelation" : {
+            "as" : "productAs",
+            "model" : "Product",
+            "type" : "belongsTo"
+        },
+        "noteList" : {
+            "model" : "Note",
+            "type" : "embedsMany",
+            "foreignKey" : "noteId",
+            "property" : "noteList"
+        }
+    },
+    "acls": []
+}

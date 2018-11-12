@@ -1,0 +1,30 @@
+{
+    "name" : "Purity",
+    "base": "PersistedModel",
+    "idInjection" : false,
+    "properties": {
+      "code": {
+        "type": "string",
+        "required": true
+      },
+      "purityName": {
+        "type": "string",
+        "required": true
+      },
+      "fineness": {
+        "type": "string",
+        "required": true
+      },
+      "productType": {
+        "type": "string",
+        "required": true
+      },
+      "srlNum": {
+        "type": "number",
+        "required": true,
+        "id" : true
+      }
+    },
+    "relations": {},
+    "acls": []
+}

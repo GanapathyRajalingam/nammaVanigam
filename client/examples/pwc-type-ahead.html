@@ -1,0 +1,40 @@
+<dom-module id="pwc-type-ahead">
+
+    <template>
+        <style>
+        </style>
+
+        inside pwc type ahead
+
+
+    </template>
+    <script>
+        Polymer({
+            is: "pwc-type-ahead",
+            behaviors: [
+                Polymer.Templatizer,
+            ],
+            _ensureTemplatized: function () {
+                if (!this.ctor) {
+                    // Template instance props that should be excluded from forwarding
+                    var props = {};
+                    props.__key__ = true;
+                    props[this.as] = true;
+                    props[this.indexAs] = true;
+                    props[this.selectedAs] = true;
+                    props.tabIndex = true;
+                    this._instanceProps = props;
+                    this._userTemplate = this.queryEffectiveChildren('template');
+                    if (this._userTemplate) {
+                        this.templatize(this._userTemplate);
+                    } else {
+                        console.warn('pwc-type-ahead requires a template to be provided in light-dom');
+                    }
+                }
+            },
+            _assignModel : function() {
+                var inst = el._templateInstance;
+            }
+        })
+    </script>
+</dom-module>

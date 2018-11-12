@@ -1,0 +1,31 @@
+{
+    "name": "Order",
+    "base": "PersistedModel",
+    "properties": {
+        "source": {
+            "required": true,
+            "type": "String"
+        },
+        "reference": {
+            "required": true,
+            "type": "String"
+        },
+        "type": {
+            "required": true,
+            "type": "String"
+        },
+        "subType": {
+            "required": true,
+            "type": "String"
+        },
+        "data": {
+            "type": "Object"
+        },
+        "_sys_time": {
+            "type": "Date"
+        },
+        "_sys_batch": {
+            "type": "String"
+        }
+    }
+}

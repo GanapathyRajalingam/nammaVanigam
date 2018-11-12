@@ -1,0 +1,376 @@
+<link rel="import" href="/bower_components/paper-icon-button/paper-icon-button-light.html">
+
+<dom-module id="ft-search-field">
+    <template>
+        <style>
+            :host {
+                height: 40px;
+                transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1),
+                width 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            .searchbox {
+                align-items: center;
+                display: flex;
+            }
+
+
+            [hidden] {
+                display: none !important;
+            }
+
+            button[is='paper-icon-button-light'],
+            paper-icon-button {
+                height: 32px;
+                margin: 6px;
+                min-width: 32px;
+                padding: 6px;
+                width: 32px;
+            }
+
+            #icon {
+                transition: margin 150ms, opacity 200ms;
+                color: black;
+            }
+
+            #prompt {
+                opacity: 0;
+            }
+
+            paper-spinner-lite {
+                height: var(--cr-icon-height-width_height);
+                width: var(--cr-icon-height-width_width);
+                --paper-spinner-color: white;
+                margin: 0 6px;
+                opacity: 0;
+                padding: 6px;
+                position: absolute;
+            }
+
+            paper-spinner-lite[active] {
+                opacity: 1;
+            }
+
+            #prompt,
+            paper-spinner-lite {
+                transition: opacity 200ms;
+            }
+
+            #searchTerm {
+                -webkit-font-smoothing: antialiased;
+                -webkit-margin-start: 2px;
+                flex: 1;
+                line-height: 185%;
+                position: relative;
+            }
+
+            label {
+                bottom: 0;
+                cursor: text;
+                left: 0;
+                overflow: hidden;
+                position: absolute;
+                right: 0;
+                top: 0;
+                white-space: nowrap;
+                color: black;
+                @apply(--paper-font-subhead);
+            }
+
+            :host([has-search-text]) label {
+                visibility: hidden;
+            }
+
+            :host(:not([narrow])) {
+                -webkit-padding-end: 0;
+                background-color: white;
+                border: 1px solid #80808038;
+                border-radius: 2px;
+                cursor: text;
+                min-width: 60px;
+                color: black;
+                color: white;
+            }
+
+            input {
+                -webkit-appearance: none;
+                border: none;
+                font: inherit;
+                outline: none;
+                padding: 0;
+                position: relative;
+                width: 100%;
+                background-color: transparent;
+                @apply(--paper-font-subhead);
+            }
+
+            input[type='search']::-webkit-search-decoration,
+            input[type='search']::-webkit-search-cancel-button,
+            input[type='search']::-webkit-search-results-button {
+                -webkit-appearance: none;
+            }
+
+            #clearSearch {
+                color: black;
+            }
+
+            :host(:not([narrow]):not([showing-search])) #icon,
+            :host(:not([narrow])) #prompt {
+                opacity: 0.7;
+            }
+
+            :host([narrow]:not([showing-search])) #searchTerm {
+                display: none;
+            }
+
+            :host([showing-search][spinner-active]) #icon {
+                opacity: 0;
+            }
+
+            :host([narrow][showing-search]) {
+                width: 100%;
+            }
+
+            :host([narrow][showing-search]) #icon,
+            :host([narrow][showing-search]) paper-spinner-lite {
+                -webkit-margin-start: 18px;
+            }
+
+            .dropdown-content> ::content {
+                max-height: 240px;
+            }
+
+            .dropdown-content> ::content > paper-item:hover {
+                background-color: var(--light-primary-color)
+            }
+            paper-item:hover {
+                background-color: var(--light-primary-color)
+            }
+
+            paper-item.iron-selected {
+                background-color: var(--light-primary-color)
+            }
+
+        </style>
+        <div class="outer">
+            <div class="searchbox">
+                <template is="dom-if" id="spinnerTemplate">
+                    <paper-spinner-lite active="[[isSpinnerShown_]]">
+                    </paper-spinner-lite>
+                </template>
+                <paper-icon-button id="icon" icon="search" title="[[label]]" tabindex$="[[computeIconTabIndex_(narrow)]]"
+                    aria-hidden$="[[computeIconAriaHidden_(narrow)]]">
+                </paper-icon-button>
+                <div id="searchTerm">
+                    <label id="prompt" for="searchInput" aria-hidden="true">[[label]]</label>
+                    <input id="searchInput" autocomplete="off" aria-labelledby="prompt" type="search" on-input="onSearchTermInput"
+                        on-search="onSearchTermSearch" on-keydown="onSearchTermKeydown_" on-focus="onInputFocus_"
+                        on-blur="onInputBlur_" incremental="" autofocus="">
+                </div>
+                <template is="dom-if" if="[[hasSearchText]]">
+                    <paper-icon-button tabindex="-1" icon="close" class="icon-cancel-toolbar" id="clearSearch" title="[[clearLabel]]"
+                        on-tap="clearSearch_">
+                    </paper-icon-button>
+                </template>
+            </div>
+
+            <div>
+                <iron-dropdown id="dropdown" vertical-offset="8" no-auto-focus opened="[[suggestions.length]]">
+                    <paper-material class="dropdown-content">
+                        <paper-menu id="menu">
+                            <template id="itemlist" is="dom-repeat" items="{{suggestions}}">
+                                <paper-item on-mouseover="onMouseOver" on-tap="onItemSelected" data-item={{item}}>
+                                    <span>{{_getDisplayValue(item)}}</span>
+                                </paper-item>
+                            </template>
+                        </paper-menu>
+                    </paper-material>
+                </iron-dropdown>
+            </div>
+        </div>
+
+
+    </template>
+
+    <script>
+        Polymer({
+            is: "ft-search-field",
+            properties: {
+                label: {
+                    type: String,
+                    value: ""
+                },
+                clearLabel: {
+                    type: String,
+                    value: ""
+                },
+                hasSearchText: {
+                    type: Boolean,
+                    reflectToAttribute: true,
+                    value: false
+                },
+                lastValue_: {
+                    type: String,
+                    value: ""
+                },
+                narrow: {
+                    type: Boolean,
+                    reflectToAttribute: true
+                },
+                showingSearch: {
+                    type: Boolean,
+                    value: false,
+                    notify: true,
+                    observer: "showingSearchChanged_",
+                    reflectToAttribute: true
+                },
+                label: String,
+                clearLabel: String,
+                spinnerActive: {
+                    type: Boolean,
+                    reflectToAttribute: true
+                },
+                isSpinnerShown_: {
+                    type: Boolean,
+                    computed: "computeIsSpinnerShown_(spinnerActive, showingSearch)"
+                },
+                searchFocused_: {
+                    type: Boolean,
+                    value: false
+                },
+                suggestions: {
+                    type: Array,
+                    observer: '_suggestionsChanged'
+                },
+                displayproperty: {
+                    type: String
+                }
+            },
+            listeners: {
+                click: "showSearch_"
+            },
+            behaviors: [
+                Polymer.PaperInputBehavior,
+                Polymer.Templatizer
+            ],
+            ready: function () {
+                if (!this.ctor) {
+                    const childTemplate = this.queryEffectiveChildren('template[item-template]');
+                    if (childTemplate) {
+                        const items = this.$.itemlist;
+                        this.templatize(childTemplate);
+                        items.templatize(childTemplate);
+                    }
+                }
+            },
+            getValue: function () {
+                return this.getSearchInput().value
+            },
+            setValue: function (value, opt_noEvent) {
+                var searchInput = this.getSearchInput();
+                searchInput.value = value;
+                this.onSearchTermInput();
+                this.onValueChanged_(value, !!opt_noEvent)
+            },
+            onSearchTermSearch: function () {
+                this.onValueChanged_(this.getValue(), false)
+            },
+            onSearchTermInput: function () {
+                this.hasSearchText = this.$.searchInput.value != "";
+                this.showingSearch = this.hasSearchText || this.isSearchFocused();
+            },
+            onValueChanged_: function (newValue, noEvent) {
+                if (newValue == this.lastValue_)
+                    return;
+                this.lastValue_ = newValue;
+                if (!noEvent) {
+                    this.fire("search-changed", newValue);
+                    console.log('search ', newValue);
+                }
+                if (this.suggestions) {
+                    console.log('suggestions ', this.suggestions);
+                } else {
+                    console.log('no suggestions ');
+                }
+            },
+            getSearchInput: function () {
+                return this.$.searchInput
+            },
+            isSearchFocused: function () {
+                return this.searchFocused_
+            },
+            showAndFocus: function () {
+                this.showingSearch = true;
+                this.focus_()
+            },
+            focus_: function () {
+                this.getSearchInput().focus()
+            },
+            computeIconTabIndex_: function (narrow) {
+                return narrow ? 0 : -1
+            },
+            computeIconAriaHidden_: function (narrow) {
+                return Boolean(!narrow).toString()
+            },
+            computeIsSpinnerShown_: function () {
+                var showSpinner = this.spinnerActive && this.showingSearch;
+                if (showSpinner)
+                    this.$.spinnerTemplate.if = true;
+                return showSpinner
+            },
+            onInputFocus_: function () {
+                this.searchFocused_ = true
+            },
+            onInputBlur_: function () {
+                this.searchFocused_ = false;
+                if (!this.hasSearchText)
+                    this.showingSearch = false
+            },
+            onSearchTermKeydown_: function (e) {
+                if (e.key == "Escape")
+                    this.showingSearch = false
+            },
+            showSearch_: function (e) {
+                if (e.target != this.$.clearSearch)
+                    this.showingSearch = true
+            },
+            clearSearch_: function (e) {
+                this.setValue("");
+                this.focus_()
+            },
+            showingSearchChanged_: function (current, previous) {
+                if (previous == undefined)
+                    return;
+                if (this.showingSearch) {
+                    this.focus_();
+                    return
+                }
+                this.setValue("");
+                this.getSearchInput().blur()
+            },
+            _suggestionsChanged: function (suggestions) {
+                this.$.dropdown.style.width = this.offsetWidth + 'px';
+            },
+            _getDisplayValue: function (item) {
+                var ret = item;
+                if (ret && typeof ret == "object") {
+                    var prop = this.displayproperty || 'name';
+                    ret = ret[prop];
+                }
+                return ret ? ret.toString() : '';
+            },
+            onMouseOver: function (e) {
+                this.$.menu.select(e.model.index);
+                this.getSearchInput().focus();
+            },
+            onItemSelected: function (e) {
+                console.log('selected item ', e.model.item);
+                this.selectedItem = e.model.item;
+                this.$.dropdown.set('opened', false);
+                //this._setSelectedItem(e.model.item);
+                this.fire('search-result-selected', e.model.item);
+                e.stopPropagation();
+            }
+        });
+    </script>
+</dom-module>

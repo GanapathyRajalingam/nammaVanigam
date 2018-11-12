@@ -1,0 +1,90 @@
+<dom-module id="trade-comp">
+
+    <template>
+        <style>
+        </style>
+        <br> Inside Trade Component
+        <div id="cpty">
+            <content></content>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: "trade-comp",
+            properties: {
+                as: {
+                    type: String,
+                    value: 'cpty'
+                },
+                trade: {
+                    type: Object
+                }
+            },
+            observers: [
+                '_tradeChanged(trade.*)',
+            ],
+            behaviors: [
+                Polymer.Templatizer,
+            ],
+            _tradeChanged: function (change) {
+                console.log('_tradeChanged change.path ', change.path);
+                if (change.path === 'trade') {
+                    this._debounceTemplate(this._render);
+                } else if (change.path === 'trade.splices') {
+                    this._debounceTemplate(this._render);
+                } else {
+                    this._debounceTemplate(this._render);
+                    this._forwardItemPath(change.path.split('.').slice(1).join('.'), change.value);
+                }
+            },
+            attached: function (e) {
+                //TBD _isVisible ?
+                this._isVisible = true;
+                this._debounceTemplate(this._render);
+            },
+            get _itemsParent() {
+                return Polymer.dom(Polymer.dom(this._userTemplate).parentNode);
+            },
+            _render: function () {
+                if (this.isAttached && this._isVisible && !this.el) {
+                    this._ensureTemplatized();
+                    var inst = this.stamp(null);
+                    inst[this.as] = this.trade.cpty;
+                    var parentNode = this._itemsParent;
+                    if (parentNode) {
+                        this.el = inst.root;
+                        this.el._templateInstance = inst;
+                        parentNode.appendChild(inst.root);
+                    }
+                }
+            },
+            _ensureTemplatized: function () {
+                if (!this.ctor) {
+                    // Template instance props that should be excluded from forwarding
+                    var props = {};
+                    props.__key__ = true;
+                    props[this.as] = true;
+                    props[this.indexAs] = true;
+                    props[this.selectedAs] = true;
+                    props.tabIndex = true;
+                    this._instanceProps = props;
+                    this._userTemplate = this.queryEffectiveChildren('template');
+                    if (this._userTemplate) {
+                        this.templatize(this._userTemplate);
+                    } else {
+                        console.warn('my-comp requires a template to be provided in light-dom');
+                    }
+                }
+            },
+            _forwardItemPath: function (path, value) {
+                console.log('_forwardItemPath ', path, value);
+                var dot = path.indexOf('.');
+                // one of following may be required
+                if (this.el && this.el._templateInstance) {
+                    this.el._templateInstance.notifyPath(path, value, true);
+                    //this.el._templateInstance[this.as] = value;
+                }
+            },
+        })
+    </script>
+</dom-module>

@@ -1,0 +1,360 @@
+<link rel="import" href="/pages/ft-label-dropdown.html">
+
+<dom-module id="purchases-list">
+
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+                overflow-y: none;
+            }
+
+            app-toolbar {
+                position: fixed;
+                top: 64px;
+                width: calc(100vw - 32px);
+                z-index: 2;
+                padding: 0px 16px;
+                margin-right: 16px;
+                @apply --layout-horizontal;
+                @apply --layout-justified; 
+                background-color: var(--app-toolbar-background-color);
+                color: white;
+            }
+
+            .title {
+                font-family: 'Roboto', 'Noto', sans-serif;
+                -webkit-font-smoothing: antialiased;
+                font-size: 16px;
+                font-weight: 400;
+                line-height: 24px;
+                margin-right: 16px;
+                padding-top: 8px;
+            }
+
+            .page-content {
+                margin-top: 16px;
+                height: calc(100vh - 128px);
+                border-top: 1px solid #f1eeee;
+            }
+
+            .list-wrapper {
+                overflow-y: auto;
+                height: 80vh;
+            }
+
+            .item {
+                padding: 16px;
+                border-top: 1px solid #fff;
+                border-bottom: 1px solid #f1eeee;
+                box-sizing: border-box;
+            }
+
+            .padtop {
+                @apply --layout-flex;
+                @apply --layout-horizontal;
+                @apply --layout-justified; 
+            }
+
+            .padbottom {
+                @apply --layout-flex;
+                @apply --layout-horizontal;
+                margin-top: 8px;
+            }
+
+            .primary {
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            .secondary {
+                font-size: 14px;
+            }
+
+            .dim {
+                color: gray;
+            }
+
+            .divider {
+                height: 1px;
+                background-color: red;
+            }
+
+            .item:focus {
+                outline: none;
+                background-color: #049ae5;
+                color: white;
+            }
+
+            .item:focus .dim {
+                color: white;
+            }
+
+            .item:focus paper-icon-button {
+                color: white;
+            }
+
+            .itemicons {
+                padding-left: 16px;
+                opacity: 0.6;
+            }
+
+            .item:focus .itemicons {
+                opacity: 1.0;
+            }
+
+            iron-list {
+                /* background-color: var(--paper-grey-200, #eee); */
+                padding-bottom: 16px;
+            }
+
+            .icon-group {
+                @apply --layout-horizontal;
+            }
+
+            .icon-group>* {
+                margin: 8px;
+            }
+
+            .edit-wrapper {
+                background-color: #F0F0F0;
+                min-width: 300px;
+                max-width: 400px;
+            }
+
+            paper-card {
+                width: 100%;
+                height: calc(100vh - 128px);
+            }
+
+            paper-card>div {
+                margin: 16px;
+            }
+
+            field-info {
+                margin: 16px 16px 0px 16px;
+            }
+
+            .list-wrapper {
+                overflow-y: auto;
+            }
+
+            .page-toolbar {
+                @apply --layout-horizontal;
+                @apply --layout-justified;
+
+                width: 100%;
+            }
+
+            .divider {
+                height: 1px;
+                margin: 6px 10px;
+                padding: 0;
+                background-color: rgba(0, 0, 0, 0.1);
+                
+            }
+
+            paper-listbox {
+                background-color: white;
+            }
+
+            .dropdown-content {
+                padding : 16px;
+            }
+        </style>
+
+        <oe-ajax auto id="xhrfetch" url="[[rootPath]]api/invoices" method="GET" content-type="application/json" on-response="fetchSuccess"></oe-ajax>
+
+        <iron-media-query query="(max-width: 900px)" query-matches="{{narrow}}">
+        </iron-media-query>
+
+        <div class="page-toolbar">
+            <div class="title">Purchases List</div>
+        </div>
+        <div class="layout horizontal justified">
+            <ft-search-field label="search" narrow="[[narrow]]"></ft-search-field>
+            <ft-label-dropdown label="[[arrayItem(names.*,listSelected)]]">
+                <div class="dropdown-trigger">
+                        <label >[[arrayItem(names.*,listSelected)]] </label>
+                        <iron-icon icon="close"></iron-icon>
+                </div> 
+                <paper-listbox class="dropdown-content" selectable="paper-item" selected={{listSelected}}>
+                    <span>Sort By</span>
+                    <paper-item>[[arrayItem(names.*,0)]]</paper-item>
+                    <div class="divider" tabIndex="-1"></div>
+                    <paper-item>[[arrayItem(names.*,1)]]</paper-item>
+                    <paper-item>[[arrayItem(names.*,2)]]</paper-item>
+                </paper-listbox>
+            </ft-label-dropdown>
+            <div class="icon-group">
+                <paper-icon-button icon="icons:visibility"></paper-icon-button>
+                <paper-fab on-tap="_newRecord" mini icon="add"></paper-fab>
+            </div>
+        </div>
+
+        <div class="page-content">
+            <div id="list-wrapper" class="list-wrapper">
+                <iron-list id="ironList" selected-item={{current}} items="[[filteredList]]" as="item" scroll-target="#list-wrapper">
+                    <template>
+                        <div class="item layout horizontal" on-tap="_tapItem" on-keydown="_handleKey" on-focus="_handleFocus" tabindex$="[[tabIndex]]">
+                            <div class="itemcontent flex-8">
+                                <div class="layout vertical">
+                                    <div>
+                                        <div class="padtop">
+                                            <div class="primary flex-3">[[item.name]]</div>
+                                            <div class="secondary dim flex-2">[[item.host_system_account_num]]</div>
+                                            <div class="flex-1">
+                                                <div class="secondary dim">[[item.user_id]]</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="padbottom">
+                                            <div class="secondary flex-3">[[item.description]]</div>
+                                            <div class="secondary flex-2"></div>
+                                            <div class="flex-1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="itemicons no-flex">
+                                <paper-icon-button on-tap="_openDetails" icon="icons:create"></paper-icon-button>
+                            </div>
+                        </div>
+                    </template>
+                </iron-list>
+            </div>
+        </div>
+
+    </template>
+
+    <script>
+        Polymer({
+
+            is: "purchases-list",
+            properties: {
+                field1: {
+                    type: String
+                },
+                vm: {
+                    type: Object
+                },
+                current: {
+                    type: Object
+                },
+                list: {
+                    type: Array,
+                    value: function () {
+                        return [];
+                    }
+                },
+                filteredList: {
+                    type: Array,
+                    value: function () {
+                        return [];
+                    }
+                }
+            },
+            listeners: { "search-changed": "_searchChanged" },
+            _searchChanged: function (e) {
+                this.set('searchText', e.detail.toLowerCase());
+                this._filterList();
+            },
+            arrayItem: function(change, index) {
+                 return this.names[index];
+            },
+            _filterList: function () {
+                if (!this.searchText) {
+                    this.set('filteredList', this.list);
+                }
+                var l = this.list.filter(function (e) {
+                    var str = ''.concat(e.name, e.currency, e.description, e.host_system_account_num);
+                    return (str.toLowerCase().indexOf(this.searchText) != -1)
+                }, this);
+                this.set('filteredList', l);
+            },
+            _handleFocus: function (e) {
+
+            },
+            _handleKey: function (e) {
+                if (e.which == 40) {
+                    var idx = e.model.index + 1;
+                    if (idx < this.list.length) {
+                        this.$.ironList.selectItem(this.list[idx]);
+                    }
+                } else if (e.which == 38) {
+                    var idx = e.model.index - 1;
+                    if (idx >= 0) {
+                        this.$.ironList.selectItem(this.list[idx]);
+                    }
+                } else if (e.which == 13) {
+                    var idx = e.model.index;
+                    this.$.ironList.deselectItem(this.list[idx]);
+                }
+            },
+            _tapItem: function (e) {
+                if (e.model.item) {
+                    this.$.ironList.selectItem(e.model.item);
+                }
+            },
+            attached: function () {
+                this.set('names', ['Name', 'Description', 'Host Account Number']);
+                this.set('listSelected', 1);
+            },
+            _openDetails: function (e) {
+                var url = '/purchases/' + e.model.item.invoice_number;
+                oe_navigate_to(url, e.model.item);
+            },
+            fetchSuccess: function (e) {
+                this.set('list', e.detail.response)
+                if (this.list.length) {
+                    this.set('current', this.list[0]);
+                }
+                this._filterList();
+            },
+            _newRecord: function (e) {
+                var url = '/purchases/new';
+                oe_navigate_to(url, e.detail.row);
+            }
+        });
+    </script>
+
+
+</dom-module>
+
+<dom-module id="field-info">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+
+            #label,
+            #info {
+                padding: 2px 0;
+            }
+
+            .horizontal>#label {
+                padding-right: 10px;
+            }
+
+            #label {
+                font-size: 14px;
+                color: var(--secondary-text-color);
+                @apply --oe-info-label;
+            }
+        </style>
+        <div class="layout horizontal wrap">
+            <div class="flex" id="label">[[label]] : </div>
+            <div class="flex">
+                <content></content>
+            </div>
+        </div>
+    </template>
+    <script>
+        Polymer({
+            is: "field-info",
+        });
+    </script>
+</dom-module>

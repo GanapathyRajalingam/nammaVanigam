@@ -1,0 +1,64 @@
+<dom-module id="ft-sd-menu">
+
+    <template>
+        <style include="ft-shared-styles iron-flex iron-flex-alignment oe-layout-styles">
+            paper-toolbar {}
+
+        </style>
+        <paper-toolbar class="menubar">
+            <!-- <app-header id="header" slot="header"> -->
+            <paper-button on-tap="_tapNewButton">
+                <oe-i18n-msg msgid="New">New</oe-i18n-msg>
+            </paper-button>
+            <paper-button on-tap="_tapSaveButton">
+                <oe-i18n-msg msgid="Save">Save</oe-i18n-msg>
+            </paper-button>
+            <content>
+            </content>
+            
+            <paper-menu-button  tabIndex="-1" horizontal-align="right">
+                <paper-icon-button icon="more-vert" class="dropdown-trigger"></paper-icon-button>
+                <paper-menu class="dropdown-content">
+                    <paper-item on-tap="doCopy">
+                        <iron-icon icon="content-copy" item-icon></iron-icon>
+                        <oe-i18n-msg msgid="Copy">Copy</oe-i18n-msg>
+                    </paper-item>
+                    <paper-item on-tap="doFetch">
+                        <iron-icon icon="refresh" item-icon></iron-icon>
+                        <oe-i18n-msg msgid="Refresh">Refresh</oe-i18n-msg>
+                    </paper-item>
+                    <paper-item on-tap="doDelete">
+                        <iron-icon icon="delete" item-icon></iron-icon>
+                        <oe-i18n-msg msgid="Delete">Delete</oe-i18n-msg>
+                    </paper-item>
+                </paper-menu>
+            </paper-menu-button>
+        </paper-toolbar>
+
+    </template>
+    <script>
+        Polymer({
+            is: 'ft-sd-menu',
+            properties: {
+
+            },
+            ready: function () {
+            },
+            attached: function (e) {
+            },
+            _tapNewButton: function (e) {
+                var form = this.parentElement;
+                if (form.handleNew) {
+                    form.handleNew(e);
+                }
+            },
+            _tapSaveButton: function (e) {
+                var form = this.parentElement;
+                if (form.doSave) {
+                    form.doSave.call(form, e);
+                }
+            }
+        });
+    </script>
+
+</dom-module>

@@ -1,0 +1,51 @@
+<dom-module id="fin-search-input">
+    
+    // TBD to make it generic take label as input 
+    // and fire events
+    <template>
+        <style>
+                #searchInput {
+                    display: inline-block;
+                    width: 0px;
+                    overflow: hidden;
+                    transition: all 0s linear;
+                }
+                #searchInput[open] {
+                    width: 150px;
+                    transition: all 50ms linear;
+                }
+        </style>
+        <div class="layout horizontal center-center">
+
+        
+            <paper-icon-button class="a1" on-tap="open" icon="icons:search"></paper-icon-button>
+            <paper-input no-label-float id="searchInput" value="{{value}}" on-input="applyFilter">
+                <iron-icon on-tap="close" class="close-search-type" icon="icons:close" suffix></iron-icon>
+            </paper-input>
+        </div>
+     </template>
+    
+        <script>
+            Polymer({
+    
+                is: "fin-search-input",
+                properties: {
+                    value: {
+                        type: String,
+                        notify : true
+                    } 
+                }, 
+                attached: function () {
+    
+                },
+                open :  function() {
+                    this.$.searchInput.setAttribute('open', true);
+                },
+                close : function() {
+                    this.$.searchInput.removeAttribute('open');
+                }
+            });
+        </script>
+    
+    
+    </dom-module>

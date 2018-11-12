@@ -1,0 +1,142 @@
+
+<dom-module id="inventory-form">
+        
+    <template>
+
+        <style include="shared-styles iron-flex iron-flex-alignment">
+            :host {
+                display: block;
+                min-height: 300px;
+           
+            }
+
+            .fields-row {
+                padding-left: 16px;
+            }
+
+            .page-title {
+                font-size: 24px;
+                font-weight: 400;
+            }
+            .fields-row>* {
+                min-width: 250px;
+                margin-right: 16px;
+            }
+
+            .page-header {
+                padding: 16px;
+                border-bottom:1px solid #8080808a;
+                margin-bottom:8px;
+            }
+
+            .tmargin {
+                margin : 60px 20px;
+            }
+
+            .prod {
+                position: relative;
+                width: auto;
+                height: 95%;
+                background-color: rgb(192, 217, 238);
+                margin: 1px;
+            }
+
+            .txn {
+                background-color: rgb(229, 238, 192);
+                margin: 1px;
+                position: relative;
+                width: auto;
+                height: 95%;
+            }
+
+    .separator {
+        border-right: 3px solid black;
+        padding-right : 16px;
+    }
+
+                .title {
+        margin-right: 16px;
+    }
+        </style>
+      <ft-sd-menu></ft-sd-menu>
+    
+        <div class="page-header layout horizontal justified">
+                <div class="title separator">Inventory</div>
+                <div class="title separator">Stock Details</div>
+                <div class="flex title">{{stock.stockNum}}</div>
+                
+                <iron-icon icon="icons:list" on-tap="_goBack"></iron-icon>
+        </div>
+        
+        <div class="layout horizontal fields-row around-justified wrap">
+            <paper-card heading="Product">
+                    
+                    <div class="card-content prod layout horizontal fields-row around-justified wrap">
+                <div class="fields">
+                        <oe-input class="flex"  field-id="itemCode"></oe-input>    
+                    <oe-combo field-id="productType" displayproperty="name" valueproperty="name" listdata='[{"name":"GOLD","type":"Gold-99"},{"name":"Silver","type":"Silver"},{"name":"Platinum", "type":"Platinum"}]' label="Product"></oe-combo>
+                        <!-- <oe-input class="flex"  field-id="ProductType"></oe-input> -->
+                        
+                        <oe-combo class="flex"  field-id="item" displayproperty="name" valueproperty="name" listurl="/api/ItemTypes"></oe-combo>
+                        <oe-combo class="flex"  field-id="vendor" displayproperty="name" valueproperty="name" listdata='[{"name":"CBE-Trader-X"},{"name":"MDU-Trader-A"},{"name":"CHN-Trader-B"}]' label="From Dealer/Manufacturer"></oe-combo>        
+                    </div>  
+
+                    </div>
+        </paper-card>
+        <paper-card heading="Stock Details">
+                <div class="card-content txn layout horizontal fields-row around-justified wrap">
+            <div class="fields">
+                <oe-decimal class="flex"  field-id="stockNum" ></oe-decimal>
+                <oe-decimal class="flex"  field-id="unitsInHand" precision=2 label="Current Available Quantity"></oe-decimal>
+                <oe-decimal class="flex"  field-id="outGoingOrders" precision=2 label="Outstanding Orders"></oe-decimal>
+                <oe-decimal class="flex"  field-id="futureBalanceUnits" precision=2 label="Net Available Quantity"></oe-decimal>
+                
+        </div>    
+            <div class="fields">
+            <oe-decimal class="flex"  field-id="maxUnitsLimit" precision=2 label="Max Quantity Limit"></oe-decimal>
+            <oe-decimal class="flex"  field-id="minUnitsLimit" precision=2 label="Min Quantity Limit"></oe-decimal>
+            <oe-date class="flex"  field-id="outOfStockFrom" label="Out-Of-Stock From" ></oe-date>
+            <oe-date class="flex"  field-id="outOfStockTo" label="Out-Of-Stock Till" ></oe-date>
+            <oe-checkbox class="flex"  field-id="needsReOrder" precision=2 label="Re-Order"></oe-checkbox>
+        </div>
+                </div>
+    </paper-card>
+        </div>
+   
+<!--                 <div class="tmargin layout horizontal center-center">
+            <paper-button primary raised on-tap="doSave">Save</paper-button>
+        </div> -->
+     
+    </template>
+
+    <script>
+        MetaPolymer({
+            is: "inventory-form",
+            modelName: 'Stock',
+            properties: {
+                suggestions: {
+                    type: Array
+                    }
+            },
+            _goBack : function() {
+                console.log('go back ', location.href);
+                oe_navigate_to('/stocks');
+            },
+            behaviors: [ft.FormBehaviour],
+            attached: function () {
+                
+            },
+            listeners :{  "oe-formdata-updated":"_successUpdate","oe-formdata-inserted":"_successAdd" },
+            _successUpdate:function(){
+                this.fire("oe-show-success","Record updated successfully");
+            },
+            
+            _successAdd:function(){
+                this.fire("oe-show-success","Record added successfully");
+            }
+          
+        });
+    </script>
+
+
+</dom-module>

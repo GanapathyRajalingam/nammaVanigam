@@ -1,0 +1,17 @@
+{
+    "name": "Product",
+    "base": "PersistedModel",
+    "properties": {
+        "productId" : {
+            "type" : "number",
+            "id" : true
+        },
+        "name": {
+            "type": "string",
+            "reqired": true
+        }
+    },
+    "validations": [],
+    "relations": {},
+    "acls": []
+}

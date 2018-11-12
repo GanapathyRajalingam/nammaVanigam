@@ -1,0 +1,133 @@
+<link rel="import" href="/examples/page-one.html">
+<dom-module id="example-app">
+
+    <template>
+        <style include="shared-styles">
+
+            :host {
+                height : 100%;
+                margin-top : 200px;
+            }
+            .wrapper {
+                padding: 16px;
+                min-height: 300px;
+            }
+
+            .toolbar {
+                background-color: var(--primary-color);
+            }
+
+            .wrapper>* {
+                min-height: 400px;
+            }
+
+            .red {
+                background: red;
+            }
+
+       
+            .green {
+                background: green;
+            }
+
+            .yellow {
+                background: yellow;
+            }
+
+            .grid {
+                width: 100%;
+            }
+
+            .cell {
+                min-width: 200px;
+                min-height: 20px;
+
+            }
+
+            .row {
+                border-bottom: solid 1px grey
+            }
+
+            .section {
+                padding : 16px;
+            }
+
+            .content {
+                height : 100%;
+                margin-top : 100px;
+            }
+        </style>
+        <app-location route="{{route}}"></app-location>
+        <app-route route="{{route}}" pattern="/:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+        <app-drawer-layout fullbleed force-narrow disable-swipe narrow=[[isNarrow]]>
+            <app-drawer id="drawer">
+                <div class="drawer-content layout vertical">
+                    <paper-item>
+                        <h4>Drawer</h4>
+                    </paper-item>
+                </div>
+            </app-drawer>
+
+            <app-header-layout>
+                <app-header reveals effects="waterfall" slot="header">
+                    <app-toolbar class="toolbar flex layout horizontal justified">
+                        <iron-icon class="logo" icon="menu" on-tap="lauchSideBar"></iron-icon>
+                        <span class="center-header" on-tap="openpage" page="home">
+                            <strong>Example</strong>
+                        </span>
+                        <iron-icon icon="refresh" on-tap="_refresh"></iron-icon>
+                    </app-toolbar>
+                </app-header>
+
+                <div class="content layout horizontal">
+                    <paper-card class="flex section">aaa</paper-card>
+                    <paper-card class="flex-5">
+                        <page-one></page-one>
+                    </paper-card>
+                    <paper-card class="flex-2 section">
+                        
+                    </paper-card>
+                </div>
+                <div class="footer">
+
+                </div>
+                <oe-message-handler fit-bottom duration="3000"></oe-message-handler>
+
+            </app-header-layout>
+        </app-drawer-layout>
+
+
+    </template>
+
+    <script>
+        Polymer({
+
+            is: "example-app",
+            properties: {
+
+            },
+            ready: function () {
+                this.list = [
+                    {
+                        code: 'AB0922',
+                        description: 'Red looks good for this code',
+                        user: 'Praveen'
+                    },
+                    {
+                        code: 'A1',
+                        description: 'Small',
+                        user: 'Gana'
+                    },
+                    {
+                        code: 'A99999999999999',
+                        description: 'Very very big, Very very big, Very very big, multiple times, Very very big, Very very big, Very very big, multiple times',
+                        user: 'Sanjesh Kumar Khode'
+                    }
+                ];
+            }
+
+        });
+    </script>
+
+
+</dom-module>

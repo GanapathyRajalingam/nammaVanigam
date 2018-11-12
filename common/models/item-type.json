@@ -1,0 +1,22 @@
+{
+    "name" : "ItemType",
+    "base": "PersistedModel",
+    "idInjection" : false,
+    "properties": {
+      "name": {
+        "type": "string",
+        "required": true
+      },
+      "localAlias": {
+        "type": "string",
+        "required": false
+      },
+      "itemNumber": {
+        "type": "number",
+        "required": true,
+        "id" : true
+      }
+    },
+    "relations": {},
+    "acls": []
+}

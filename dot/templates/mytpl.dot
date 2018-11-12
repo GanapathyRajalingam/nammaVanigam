@@ -1,0 +1,27 @@
+<html>
+<body>
+<div>
+Model is <%=it.model %> 
+</div>
+Fields are 
+
+<%=Object.keys(it.fields).length%>
+
+<% function children(fields) { %>
+
+    <%= Object.keys(fields).length %>   
+    <%~ Object.keys(fields) :k %>
+        <%= fields[k].type %> 
+    <%~%>
+<% } %>
+
+<% children(it.fields); %>
+
+<div>
+And end
+</div>
+</body>
+</html>
+
+
+

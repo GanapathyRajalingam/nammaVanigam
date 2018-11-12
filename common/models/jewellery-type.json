@@ -1,0 +1,30 @@
+{
+    "name" : "JewelleryType",
+    "base": "PersistedModel",
+    "idInjection" : false,
+    "properties": {
+      "name": {
+        "type": "string",
+        "required": true
+      },
+      "jtype": {
+        "type": "string",
+        "required": true
+      },
+      "category": {
+        "type": "string",
+        "required": true
+      },
+      "origin": {
+        "type": "string",
+        "required": true
+      },
+      "srlNum": {
+        "type": "number",
+        "required": true,
+        "id" : true
+      }
+    },
+    "relations": {},
+    "acls": []
+}
